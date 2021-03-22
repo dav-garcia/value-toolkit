@@ -19,7 +19,12 @@
 *.tar.gz
 *.rar
 
-# IDE files
+# Development files
 .idea/
 *.iml
+target/
+
+# Local runtime files
+/local/
+application.properties
 

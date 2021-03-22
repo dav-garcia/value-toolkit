@@ -1,0 +1,7 @@
+
+provider:
+  active: "fmp"
+  local:
+    dir: "local"
+  fmp:
+    url: "https://financialmodelingprep.com"
