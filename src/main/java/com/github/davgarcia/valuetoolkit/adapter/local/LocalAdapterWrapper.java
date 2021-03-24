@@ -4,13 +4,17 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.davgarcia.valuetoolkit.BusinessDataProvider;
 import com.github.davgarcia.valuetoolkit.domain.BusinessLocator;
 import com.github.davgarcia.valuetoolkit.domain.BusinessProfile;
+import com.github.davgarcia.valuetoolkit.domain.Period;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
+import java.util.List;
 
 public class LocalAdapterWrapper implements BusinessDataProvider {
 
@@ -25,9 +29,10 @@ public class LocalAdapterWrapper implements BusinessDataProvider {
         this.localDir = localDir;
         objectMapper = new ObjectMapper();
 
-        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-        objectMapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL);
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL)
+                .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+                .enable(SerializationFeature.INDENT_OUTPUT);
     }
 
     @Override
@@ -38,6 +43,16 @@ public class LocalAdapterWrapper implements BusinessDataProvider {
             save(locator, profile);
         }
         return profile;
+    }
+
+    @Override
+    public List<Period> getFiscalYears(final BusinessLocator locator, final LocalDate first, final LocalDate last) {
+        return null;
+    }
+
+    @Override
+    public List<Period> getQuarters(final BusinessLocator locator, final LocalDate first, final LocalDate last) {
+        return null;
     }
 
     private <T> T load(final BusinessLocator locator, Class<T> type) {

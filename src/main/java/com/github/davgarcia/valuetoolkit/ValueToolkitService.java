@@ -1,5 +1,8 @@
 package com.github.davgarcia.valuetoolkit;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class ValueToolkitService {
 
     private final BusinessDataProvider provider;

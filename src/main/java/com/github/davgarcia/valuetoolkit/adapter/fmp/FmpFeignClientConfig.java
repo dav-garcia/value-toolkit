@@ -2,7 +2,8 @@ package com.github.davgarcia.valuetoolkit.adapter.fmp;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.davgarcia.valuetoolkit.adapter.fmp.mixin.BusinessProfileMixin;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.github.davgarcia.valuetoolkit.adapter.fmp.dto.BusinessProfileMixin;
 import com.github.davgarcia.valuetoolkit.domain.BusinessProfile;
 import feign.RequestInterceptor;
 import feign.codec.Decoder;
@@ -31,8 +32,9 @@ public class FmpFeignClientConfig {
     private ObjectMapper customObjectMapper() {
         final var objectMapper = new ObjectMapper();
 
-        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        objectMapper.addMixIn(BusinessProfile.class, BusinessProfileMixin.class);
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+                .addMixIn(BusinessProfile.class, BusinessProfileMixin.class);
 
         return objectMapper;
     }

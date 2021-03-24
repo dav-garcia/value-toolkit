@@ -26,5 +26,4 @@ target/
 
 # Local runtime files
 /local/
-application.properties
-
+/application.properties

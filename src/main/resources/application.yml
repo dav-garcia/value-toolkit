@@ -5,3 +5,25 @@ provider:
     dir: "local"
   fmp:
     url: "https://financialmodelingprep.com"
+
+economy:
+  erp: 4.63
+  risk-free-rate:
+    usd: 1.64
+    gbp: 0.76
+    eur: 0.10
+    cny: 3.21
+    cad: 1.50
+  country-risk-rate:
+    cn: 1.00
+  size-risk-rate:
+    small: 1.00
+    micro: 2.50
+  gdp-growth-rate:
+    us: 2.28
+    uk: 2.08
+    fr: 1.18
+    de: 1.70
+    cn: 7.10
+    ca: 2.13
+

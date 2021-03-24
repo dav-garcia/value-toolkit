@@ -1,9 +1,8 @@
-package com.github.davgarcia.valuetoolkit.adapter.fmp.mixin;
+package com.github.davgarcia.valuetoolkit.adapter.fmp.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-@SuppressWarnings("java:S1610")
-public abstract class BusinessProfileMixin {
+public interface BusinessProfileMixin {
 
     @JsonProperty("exchangeShortName")
     public abstract String getExchange();

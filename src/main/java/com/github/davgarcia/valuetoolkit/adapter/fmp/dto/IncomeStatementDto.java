@@ -1,13 +1,15 @@
-package com.github.davgarcia.valuetoolkit.domain;
+package com.github.davgarcia.valuetoolkit.adapter.fmp.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Value;
 
+import java.time.LocalDate;
+
 @Value
-@AllArgsConstructor
-@Builder
-public class IncomeStatement {
+public class IncomeStatementDto {
+
+    LocalDate date;
+    String period;
 
     double revenue;
     double costOfRevenue;
@@ -23,6 +25,7 @@ public class IncomeStatement {
     double interestExpense;
     double depreciationAndAmortization;
     double ebitda;
+    @JsonProperty("ebitdaratio")
     double ebitdaRatio;
 
     double operatingIncome;
@@ -37,8 +40,11 @@ public class IncomeStatement {
     double netIncomeRatio;
 
     double eps;
+    @JsonProperty("epsdiluted")
     double epsDiluted;
 
+    @JsonProperty("weightedAverageShsOut")
     double weightedAverageSharesOutstanding;
+    @JsonProperty("weightedAverageShsOutDil")
     double weightedAverageSharesOutstandingDiluted;
 }

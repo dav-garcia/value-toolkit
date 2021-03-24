@@ -1,13 +1,15 @@
-package com.github.davgarcia.valuetoolkit.domain;
+package com.github.davgarcia.valuetoolkit.adapter.fmp.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Value;
 
+import java.time.LocalDate;
+
 @Value
-@AllArgsConstructor
-@Builder
-public class BalanceSheet {
+public class BalanceSheetDto {
+
+    LocalDate date;
+    String period;
 
     double cashAndCashEquivalents;
     double shortTermInvestments;
@@ -15,6 +17,7 @@ public class BalanceSheet {
     double inventory;
     double otherCurrentAssets;
     double totalCurrentAssets;
+    @JsonProperty("propertyPlantEquipmentNet")
     double netPropertyPlantEquipment;
     double goodwill;
     double intangibleAssets;

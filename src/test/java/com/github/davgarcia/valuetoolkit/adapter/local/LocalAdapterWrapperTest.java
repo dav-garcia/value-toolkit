@@ -2,15 +2,14 @@ package com.github.davgarcia.valuetoolkit.adapter.local;
 
 import com.github.davgarcia.valuetoolkit.BusinessDataProvider;
 import com.github.davgarcia.valuetoolkit.DomainObjectMother;
-import com.github.davgarcia.valuetoolkit.domain.BusinessLocator;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.util.ResourceUtils;
 
 import java.io.IOException;
@@ -24,17 +23,17 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-@RunWith(MockitoJUnitRunner.StrictStubs.class)
-public class LocalAdapterWrapperTest {
+@ExtendWith(MockitoExtension.class)
+class LocalAdapterWrapperTest {
 
-    private static final String PROFILE_FILENAME = "NASDAQ.MSFT-profile.json";
+    private static final String PROFILE_NAME = "NASDAQ.MSFT-profile.json";
 
     @Mock
     private BusinessDataProvider provider;
     private FileSystem fileSystem;
     private LocalAdapterWrapper sut;
 
-    @Before
+    @BeforeEach
     public void setup() throws IOException {
         if (fileSystem != null) {
             fileSystem.close();
@@ -45,31 +44,29 @@ public class LocalAdapterWrapperTest {
     }
 
     @Test
-    public void givenNoLocalFileWhenGetThenSave() throws IOException {
-        final var locator = new BusinessLocator("NASDAQ", "MSFT");
+    void givenNoLocalFileWhenGetThenSave() throws IOException {
         final var profile = DomainObjectMother.businessProfile();
-        doReturn(profile).when(provider).getBusinessProfile(locator);
+        doReturn(profile).when(provider).getBusinessProfile(DomainObjectMother.businessLocator());
 
-        final var resultObject = sut.getBusinessProfile(locator);
-        final var resultJson = Files.readString(fileSystem.getPath(PROFILE_FILENAME));
+        final var resultObject = sut.getBusinessProfile(DomainObjectMother.businessLocator());
+        final var resultJson = Files.readString(fileSystem.getPath(PROFILE_NAME));
 
         assertThat(resultObject).isEqualTo(profile);
-        assertThat(resultJson).isEqualTo(loadResource(PROFILE_FILENAME));
+        assertThat(resultJson).isEqualTo(loadResource("local", PROFILE_NAME));
     }
 
     @Test
-    public void givenLocalFileWhenGetThenReturnIt() throws IOException {
-        final var locator = new BusinessLocator("NASDAQ", "MSFT");
-        Files.writeString(fileSystem.getPath(PROFILE_FILENAME), loadResource(PROFILE_FILENAME));
+    void givenLocalFileWhenGetThenReturnIt() throws IOException {
+        Files.writeString(fileSystem.getPath(PROFILE_NAME), loadResource("local", PROFILE_NAME));
 
-        final var result = sut.getBusinessProfile(locator);
+        final var result = sut.getBusinessProfile(DomainObjectMother.businessLocator());
 
         assertThat(result).isEqualTo(DomainObjectMother.businessProfile());
         verify(provider, never()).getBusinessProfile(any());
     }
 
-    private String loadResource(final String name) throws IOException {
-        final var path = ResourceUtils.getFile("classpath:local/" + name).toPath();
+    private String loadResource(final String dir, final String name) throws IOException {
+        final var path = ResourceUtils.getFile(String.format("classpath:%s/%s", dir, name)).toPath();
         return StringUtils.stripEnd(Files.readString(path, StandardCharsets.UTF_8), null);
     }
 }

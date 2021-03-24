@@ -1,9 +1,11 @@
 {
   "name" : "Microsoft Corp",
+  "description" : "Microsoft Corporation develops, licenses, and supports software, services, devices, and solutions worldwide...",
   "ceo" : "Mr. Satya Nadella",
   "industry" : "Software Infrastructure",
   "country" : "US",
-  "price" : 236.45,
+  "currency" : "USD",
+  "price" : 234.81,
   "beta" : 0.85519,
-  "marketCap" : 1783357900000
+  "marketCap" : 1.77098863E12
 }
