@@ -33,7 +33,7 @@ public class FmpAdapter implements BusinessDataProvider {
      *
      * @param clock the clock to get the current date from; null to restore default clock.
      */
-    void setClock(final Clock clock) {
+    public void setClock(final Clock clock) {
         this.clock = clock == null ? Clock.systemDefaultZone() : clock;
     }
 
@@ -49,7 +49,7 @@ public class FmpAdapter implements BusinessDataProvider {
                 .mapToObj(y -> Pair.of(y, Period.builder()
                         .type(Period.Type.YEAR)
                         .status(Period.Status.ACTUAL)
-                        .name("FY" + y)
+                        .name("FY-" + y)
                         .date(LocalDate.ofYearDay(y, 1))))
                 .collect(Collectors.toMap(Pair::getLeft, Pair::getRight));
 

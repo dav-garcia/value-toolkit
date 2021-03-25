@@ -1,6 +1,7 @@
 package com.github.davgarcia.valuetoolkit.config;
 
 import com.github.davgarcia.valuetoolkit.BusinessDataProvider;
+import com.github.davgarcia.valuetoolkit.ValueToolkitService;
 import com.github.davgarcia.valuetoolkit.adapter.fmp.FmpAdapter;
 import com.github.davgarcia.valuetoolkit.adapter.fmp.FmpFeignClient;
 import com.github.davgarcia.valuetoolkit.adapter.local.LocalAdapterWrapper;
@@ -15,9 +16,9 @@ import org.springframework.context.annotation.Primary;
 import java.nio.file.Path;
 
 @Configuration
-public class BusinessDataProviderConfig {
+public class ApplicationConfig {
 
-    private static final Logger LOG = LoggerFactory.getLogger(BusinessDataProviderConfig.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ApplicationConfig.class);
 
     @Bean
     @ConditionalOnProperty(value = "provider.active", havingValue = "fmp")
@@ -32,5 +33,10 @@ public class BusinessDataProviderConfig {
         LOG.info("Active data provider: {}", provider.getClass().getSimpleName());
         LOG.info("Local directory: {}", localDir);
         return new LocalAdapterWrapper(provider, Path.of(localDir));
+    }
+
+    @Bean
+    public ValueToolkitService valueToolkitService(final BusinessDataProvider provider) {
+        return new ValueToolkitService(provider);
     }
 }

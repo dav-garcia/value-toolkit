@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Value;
 
 /**
- * Business profile information.
+ * Company profile information.
  */
 @Value
 @AllArgsConstructor

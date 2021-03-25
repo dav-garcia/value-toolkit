@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
 
+/**
+ * Financial data for a period: balance sheet.
+ */
 @Value
 @AllArgsConstructor
 @Builder

@@ -3,6 +3,8 @@ package com.github.davgarcia.valuetoolkit;
 import com.github.davgarcia.valuetoolkit.config.EconomyConfigProperties;
 import com.github.davgarcia.valuetoolkit.domain.BalanceSheet;
 import com.github.davgarcia.valuetoolkit.domain.Business;
+import com.github.davgarcia.valuetoolkit.domain.BusinessEstimates;
+import com.github.davgarcia.valuetoolkit.domain.BusinessIndicators;
 import com.github.davgarcia.valuetoolkit.domain.BusinessLocator;
 import com.github.davgarcia.valuetoolkit.domain.BusinessProfile;
 import com.github.davgarcia.valuetoolkit.domain.CashFlowStatement;
@@ -15,6 +17,9 @@ import java.util.Map;
 
 public class DomainObjectMother {
 
+    private static final EconomyConfigProperties ECONOMY = new EconomyConfigProperties(
+            4.63, Map.of("usd", 1.64), null, null, Map.of("us", 2.28));
+    private static final BusinessLocator BUSINESS_LOCATOR = new BusinessLocator("NASDAQ", "MSFT");
     private static final BusinessProfile BUSINESS_PROFILE = BusinessProfile.builder()
             .name("Microsoft Corp")
             .description("Microsoft Corporation develops, licenses, and supports software, services, devices, and solutions worldwide...")
@@ -26,7 +31,7 @@ public class DomainObjectMother {
             .beta(0.85519)
             .marketCap(1770988630000d)
             .build();
-    private static final IncomeStatement INCOME_STATEMENT_2016 = IncomeStatement.builder()
+    private static final IncomeStatement INCOME_STATEMENT_2020 = IncomeStatement.builder()
             .revenue(143015000000d)
             .costOfRevenue(46078000000d)
             .grossProfit(96937000000d)
@@ -54,7 +59,7 @@ public class DomainObjectMother {
             .weightedAverageSharesOutstanding(7610000000d)
             .weightedAverageSharesOutstandingDiluted(7683000000d)
             .build();
-    private static final BalanceSheet BALANCE_SHEET_2016 = BalanceSheet.builder()
+    private static final BalanceSheet BALANCE_SHEET_2020 = BalanceSheet.builder()
             .cashAndCashEquivalents(13576000000d)
             .shortTermInvestments(122951000000d)
             .netReceivables(32011000000d)
@@ -92,7 +97,7 @@ public class DomainObjectMother {
             .totalDebt(63327000000d)
             .netDebt(49751000000d)
             .build();
-    private static final CashFlowStatement CASH_FLOW_STATEMENT_2016 = CashFlowStatement.builder()
+    private static final CashFlowStatement CASH_FLOW_STATEMENT_2020 = CashFlowStatement.builder()
             .netIncome(44281000000d)
             .depreciationAndAmortization(12796000000d)
             .deferredIncomeTax(-3620000000d)
@@ -124,25 +129,30 @@ public class DomainObjectMother {
             .capitalExpenditure(-15441000000d)
             .freeCashFlow(45234000000d)
             .build();
-    private static final BusinessLocator BUSINESS_LOCATOR = new BusinessLocator("NASDAQ", "MSFT");
+    private static final BusinessEstimates BUSINESS_ESTIMATES = BusinessEstimates.builder()
+            .growthYears(10)
+            .build();
     private static final Business BUSINESS = Business.builder()
             .locator(BUSINESS_LOCATOR)
             .profile(BUSINESS_PROFILE)
             .periods(List.of(Period.builder()
                     .type(Period.Type.YEAR)
                     .status(Period.Status.ACTUAL)
-                    .name("FY2016")
-                    .date(LocalDate.ofYearDay(2016, 1))
-                    .incomeStatement(INCOME_STATEMENT_2016)
-                    .balanceSheet(BALANCE_SHEET_2016)
-                    .cashFlowStatement(CASH_FLOW_STATEMENT_2016)
+                    .name("FY-2020")
+                    .date(LocalDate.ofYearDay(2020, 1))
+                    .incomeStatement(INCOME_STATEMENT_2020)
+                    .balanceSheet(BALANCE_SHEET_2020)
+                    .cashFlowStatement(CASH_FLOW_STATEMENT_2020)
                     .build()))
+            .estimates(BUSINESS_ESTIMATES)
             .build();
-    private static final EconomyConfigProperties CONFIG_PROPERTIES = new EconomyConfigProperties(
-            4.63, Map.of("usd", 1.64), null, null, Map.of("us", 2.28));
 
     private DomainObjectMother() {
         // Empty.
+    }
+
+    public static EconomyConfigProperties economy() {
+        return ECONOMY;
     }
 
     public static BusinessLocator businessLocator() {
@@ -153,23 +163,26 @@ public class DomainObjectMother {
         return BUSINESS_PROFILE;
     }
 
-    public static IncomeStatement incomeStatement2016() {
-        return INCOME_STATEMENT_2016;
+    public static IncomeStatement incomeStatement2020() {
+        return INCOME_STATEMENT_2020;
     }
 
-    public static BalanceSheet balanceSheet2016() {
-        return BALANCE_SHEET_2016;
+    public static BalanceSheet balanceSheet2020() {
+        return BALANCE_SHEET_2020;
     }
 
-    public static CashFlowStatement cashFlowStatement2016() {
-        return CASH_FLOW_STATEMENT_2016;
+    public static CashFlowStatement cashFlowStatement2020() {
+        return CASH_FLOW_STATEMENT_2020;
+    }
+
+    public static BusinessEstimates businessEstimates() {
+        return BUSINESS_ESTIMATES;
     }
 
     public static Business business() {
+        if (BUSINESS.getIndicators() == null) {
+            BUSINESS.setIndicators(new BusinessIndicators(ECONOMY, BUSINESS));
+        }
         return BUSINESS;
-    }
-
-    public static EconomyConfigProperties configProperties() {
-        return CONFIG_PROPERTIES;
     }
 }
