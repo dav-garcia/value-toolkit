@@ -16,6 +16,6 @@ class WaccIndicatorTest {
 
         final var result = sut.eval(economy, business);
 
-        assertThat(result).isEqualTo(5.524148588038859);
+        assertThat(result).isEqualTo(5.5286166369453325);
     }
 }

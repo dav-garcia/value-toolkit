@@ -16,6 +16,6 @@ class TaxRateIndicatorTest {
 
         final var result = sut.eval(economy, business);
 
-        assertThat(result).isEqualTo(16.507655177615206);
+        assertThat(result).isEqualTo(13.344470328232617);
     }
 }

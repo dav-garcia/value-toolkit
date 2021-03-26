@@ -16,6 +16,7 @@ public abstract class AbstractAverageIndicator implements BusinessIndicator {
     }
 
     @Override
+    @SuppressWarnings("java:S3518")
     public double eval(final EconomyConfigProperties economy, final Business business) {
         double sum = 0d;
         int num = 0;

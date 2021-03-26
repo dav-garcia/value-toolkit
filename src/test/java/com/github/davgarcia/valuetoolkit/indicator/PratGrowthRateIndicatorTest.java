@@ -16,6 +16,6 @@ class PratGrowthRateIndicatorTest {
 
         final var result = sut.eval(economy, business);
 
-        assertThat(result).isEqualTo(24.634839058696242);
+        assertThat(result).isEqualTo(16.773416340697782);
     }
 }

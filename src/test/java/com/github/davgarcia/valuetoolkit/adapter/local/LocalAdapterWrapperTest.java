@@ -4,18 +4,19 @@ import com.github.davgarcia.valuetoolkit.BusinessDataProvider;
 import com.github.davgarcia.valuetoolkit.DomainObjectMother;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.util.ResourceUtils;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
+import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -27,6 +28,9 @@ import static org.mockito.Mockito.verify;
 class LocalAdapterWrapperTest {
 
     private static final String PROFILE_NAME = "NASDAQ.MSFT-profile.json";
+    private static final String PERIODS_NAME = "NASDAQ.MSFT-periods-20160101-20200101.json";
+    private static final LocalDate FIRST_YEAR = LocalDate.ofYearDay(2016, 1);
+    private static final LocalDate LAST_YEAR = LocalDate.ofYearDay(2020, 1);
 
     @Mock
     private BusinessDataProvider provider;
@@ -44,11 +48,12 @@ class LocalAdapterWrapperTest {
     }
 
     @Test
-    void givenNoLocalFileWhenGetThenSave() throws IOException {
+    void givenNoLocalProfileWhenGetThenSave() throws IOException {
+        final var locator = DomainObjectMother.businessLocator();
         final var profile = DomainObjectMother.businessProfile();
-        doReturn(profile).when(provider).getBusinessProfile(DomainObjectMother.businessLocator());
+        doReturn(profile).when(provider).getBusinessProfile(locator);
 
-        final var resultObject = sut.getBusinessProfile(DomainObjectMother.businessLocator());
+        final var resultObject = sut.getBusinessProfile(locator);
         final var resultJson = Files.readString(fileSystem.getPath(PROFILE_NAME));
 
         assertThat(resultObject).isEqualTo(profile);
@@ -56,7 +61,7 @@ class LocalAdapterWrapperTest {
     }
 
     @Test
-    void givenLocalFileWhenGetThenReturnIt() throws IOException {
+    void givenLocalProfileWhenGetThenReturnIt() throws IOException {
         Files.writeString(fileSystem.getPath(PROFILE_NAME), loadResource("local", PROFILE_NAME));
 
         final var result = sut.getBusinessProfile(DomainObjectMother.businessLocator());
@@ -65,8 +70,31 @@ class LocalAdapterWrapperTest {
         verify(provider, never()).getBusinessProfile(any());
     }
 
+    @Test
+    void givenNoLocalPeriodsWhenGetThenSave() throws IOException {
+        final var locator = DomainObjectMother.businessLocator();
+        final var periods = DomainObjectMother.business().getPeriods();
+        doReturn(periods).when(provider).getFiscalYears(locator, FIRST_YEAR, LAST_YEAR);
+
+        final var resultObject = sut.getFiscalYears(locator, FIRST_YEAR, LAST_YEAR);
+        final var resultJson = Files.readString(fileSystem.getPath(PERIODS_NAME));
+
+        assertThat(resultObject).isEqualTo(periods);
+        assertThat(resultJson).isEqualTo(loadResource("local", PERIODS_NAME));
+    }
+
+    @Test
+    void givenLocalPeriodsWhenGetThenReturnThem() throws IOException {
+        Files.writeString(fileSystem.getPath(PERIODS_NAME), loadResource("local", PERIODS_NAME));
+
+        final var result = sut.getFiscalYears(DomainObjectMother.businessLocator(), FIRST_YEAR, LAST_YEAR);
+
+        assertThat(result).isEqualTo(DomainObjectMother.business().getPeriods());
+        verify(provider, never()).getFiscalYears(any(), any(), any());
+    }
+
     private String loadResource(final String dir, final String name) throws IOException {
-        final var path = ResourceUtils.getFile(String.format("classpath:%s/%s", dir, name)).toPath();
-        return StringUtils.stripEnd(Files.readString(path, StandardCharsets.UTF_8), null);
+        final var content = IOUtils.resourceToString(String.format("/%s/%s", dir, name), StandardCharsets.UTF_8);
+        return StringUtils.stripEnd(content, null); // Some editors add a newline at EOF, but Jackson doesn't.
     }
 }

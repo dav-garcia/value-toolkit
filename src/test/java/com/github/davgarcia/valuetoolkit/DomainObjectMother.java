@@ -1,5 +1,6 @@
 package com.github.davgarcia.valuetoolkit;
 
+import com.github.davgarcia.valuetoolkit.adapter.fmp.FmpAdapter;
 import com.github.davgarcia.valuetoolkit.config.EconomyConfigProperties;
 import com.github.davgarcia.valuetoolkit.domain.BalanceSheet;
 import com.github.davgarcia.valuetoolkit.domain.Business;
@@ -9,16 +10,14 @@ import com.github.davgarcia.valuetoolkit.domain.BusinessLocator;
 import com.github.davgarcia.valuetoolkit.domain.BusinessProfile;
 import com.github.davgarcia.valuetoolkit.domain.CashFlowStatement;
 import com.github.davgarcia.valuetoolkit.domain.IncomeStatement;
-import com.github.davgarcia.valuetoolkit.domain.Period;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Map;
 
 public class DomainObjectMother {
 
     private static final EconomyConfigProperties ECONOMY = new EconomyConfigProperties(
-            4.63, Map.of("usd", 1.64), null, null, Map.of("us", 2.28));
+            4.63, Map.of("usd", 1.64), Map.of("cn", 1.00), null, Map.of("us", 2.28));
     private static final BusinessLocator BUSINESS_LOCATOR = new BusinessLocator("NASDAQ", "MSFT");
     private static final BusinessProfile BUSINESS_PROFILE = BusinessProfile.builder()
             .name("Microsoft Corp")
@@ -131,19 +130,16 @@ public class DomainObjectMother {
             .build();
     private static final BusinessEstimates BUSINESS_ESTIMATES = BusinessEstimates.builder()
             .growthYears(10)
+            .growthRate(12.5d)
+            .gdpRateWeight(0.75)
             .build();
+
     private static final Business BUSINESS = Business.builder()
             .locator(BUSINESS_LOCATOR)
             .profile(BUSINESS_PROFILE)
-            .periods(List.of(Period.builder()
-                    .type(Period.Type.YEAR)
-                    .status(Period.Status.ACTUAL)
-                    .name("FY-2020")
-                    .date(LocalDate.ofYearDay(2020, 1))
-                    .incomeStatement(INCOME_STATEMENT_2020)
-                    .balanceSheet(BALANCE_SHEET_2020)
-                    .cashFlowStatement(CASH_FLOW_STATEMENT_2020)
-                    .build()))
+            // Beware this is using real fiscal years from 2016 to 2020!
+            .periods(new FmpAdapter(new FakeFmpFeignClient())
+                    .getFiscalYears(BUSINESS_LOCATOR, LocalDate.ofYearDay(2016, 1), LocalDate.ofYearDay(2020, 1)))
             .estimates(BUSINESS_ESTIMATES)
             .build();
 

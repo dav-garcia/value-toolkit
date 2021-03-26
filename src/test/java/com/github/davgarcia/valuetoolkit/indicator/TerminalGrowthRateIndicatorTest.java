@@ -16,6 +16,6 @@ class TerminalGrowthRateIndicatorTest {
 
         final var result = sut.eval(economy, business);
 
-        assertThat(result).isEqualTo(3.8208305818343904);
+        assertThat(result).isEqualTo(3.0515044833544196);
     }
 }

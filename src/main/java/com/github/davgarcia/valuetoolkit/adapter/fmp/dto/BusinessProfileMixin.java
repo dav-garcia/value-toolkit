@@ -4,9 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public interface BusinessProfileMixin {
 
-    @JsonProperty("exchangeShortName")
-    public abstract String getExchange();
-
     @JsonProperty("companyName")
     public abstract String getName();
 
