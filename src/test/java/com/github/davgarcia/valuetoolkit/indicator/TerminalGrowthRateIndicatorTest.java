@@ -11,11 +11,11 @@ class TerminalGrowthRateIndicatorTest {
 
     @Test
     void givenBusinessThenComputeTerminalGrowthRate() {
-        final var economy = DomainObjectMother.economy();
+        final var params = DomainObjectMother.params();
         final var business = DomainObjectMother.business();
 
-        final var result = sut.eval(economy, business);
+        final var result = sut.eval(params, business);
 
-        assertThat(result).isEqualTo(3.0515044833544196);
+        assertThat(result).isEqualTo(3.3086726444725594);
     }
 }

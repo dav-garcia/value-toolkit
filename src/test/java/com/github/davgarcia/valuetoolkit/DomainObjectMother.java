@@ -1,7 +1,9 @@
 package com.github.davgarcia.valuetoolkit;
 
 import com.github.davgarcia.valuetoolkit.adapter.fmp.FmpAdapter;
-import com.github.davgarcia.valuetoolkit.config.EconomyConfigProperties;
+import com.github.davgarcia.valuetoolkit.config.EconomicFactors;
+import com.github.davgarcia.valuetoolkit.config.ValuationFactors;
+import com.github.davgarcia.valuetoolkit.config.ValueToolkitConfigProperties;
 import com.github.davgarcia.valuetoolkit.domain.BalanceSheet;
 import com.github.davgarcia.valuetoolkit.domain.Business;
 import com.github.davgarcia.valuetoolkit.domain.BusinessEstimates;
@@ -16,8 +18,15 @@ import java.util.Map;
 
 public class DomainObjectMother {
 
-    private static final EconomyConfigProperties ECONOMY = new EconomyConfigProperties(
-            4.63, Map.of("usd", 1.64), Map.of("cn", 1.00), null, Map.of("us", 2.28));
+    private static final ValueToolkitConfigProperties PARAMS = new ValueToolkitConfigProperties(
+            EconomicFactors.builder()
+                    .erp(4.63)
+                    .riskFreeRate(Map.of("usd", 1.64))
+                    .countryRiskRate(Map.of("cn", 1.00))
+                    .gdpGrowthRate(Map.of("us", 2.28))
+                    .build(),
+            ValuationFactors.builder()
+                    .build());
     private static final BusinessLocator BUSINESS_LOCATOR = new BusinessLocator("NASDAQ", "MSFT");
     private static final BusinessProfile BUSINESS_PROFILE = BusinessProfile.builder()
             .name("Microsoft Corp")
@@ -131,7 +140,6 @@ public class DomainObjectMother {
     private static final BusinessEstimates BUSINESS_ESTIMATES = BusinessEstimates.builder()
             .growthYears(10)
             .growthRate(12.5d)
-            .gdpRateWeight(0.75)
             .build();
 
     private static final Business BUSINESS = Business.builder()
@@ -147,8 +155,8 @@ public class DomainObjectMother {
         // Empty.
     }
 
-    public static EconomyConfigProperties economy() {
-        return ECONOMY;
+    public static ValueToolkitConfigProperties params() {
+        return PARAMS;
     }
 
     public static BusinessLocator businessLocator() {
@@ -177,7 +185,7 @@ public class DomainObjectMother {
 
     public static Business business() {
         if (BUSINESS.getIndicators() == null) {
-            BUSINESS.setIndicators(new BusinessIndicators(ECONOMY, BUSINESS));
+            BUSINESS.setIndicators(new BusinessIndicators(PARAMS, BUSINESS));
         }
         return BUSINESS;
     }

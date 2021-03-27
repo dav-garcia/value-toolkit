@@ -16,9 +16,9 @@ import org.springframework.context.annotation.Primary;
 import java.nio.file.Path;
 
 @Configuration
-public class ApplicationConfig {
+public class ValueToolkitConfig {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ApplicationConfig.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ValueToolkitConfig.class);
 
     @Bean
     @ConditionalOnProperty(value = "provider.active", havingValue = "fmp")
@@ -36,7 +36,8 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public ValueToolkitService valueToolkitService(final BusinessDataProvider provider) {
-        return new ValueToolkitService(provider);
+    public ValueToolkitService valueToolkitService(final ValueToolkitConfigProperties params,
+                                                   final BusinessDataProvider provider) {
+        return new ValueToolkitService(params, provider);
     }
 }

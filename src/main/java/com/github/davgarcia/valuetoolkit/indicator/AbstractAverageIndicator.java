@@ -1,7 +1,7 @@
 package com.github.davgarcia.valuetoolkit.indicator;
 
 import com.github.davgarcia.valuetoolkit.BusinessIndicator;
-import com.github.davgarcia.valuetoolkit.config.EconomyConfigProperties;
+import com.github.davgarcia.valuetoolkit.config.ValueToolkitConfigProperties;
 import com.github.davgarcia.valuetoolkit.domain.Business;
 import com.github.davgarcia.valuetoolkit.domain.Period;
 
@@ -17,7 +17,7 @@ public abstract class AbstractAverageIndicator implements BusinessIndicator {
 
     @Override
     @SuppressWarnings("java:S3518")
-    public double eval(final EconomyConfigProperties economy, final Business business) {
+    public double eval(final ValueToolkitConfigProperties params, final Business business) {
         double sum = 0d;
         int num = 0;
         for (final var period : business.getPeriods()) {
@@ -25,12 +25,12 @@ public abstract class AbstractAverageIndicator implements BusinessIndicator {
                 break;
             }
             if (period.getStatus() == withStatus || withStatus == null) {
-                sum += eval(economy, business, period);
+                sum += eval(params, business, period);
                 num++;
             }
         }
         return num > 1 ? sum / num : sum;
     }
 
-    protected abstract double eval(final EconomyConfigProperties economy, final Business business, final Period period);
+    protected abstract double eval(final ValueToolkitConfigProperties params, final Business business, final Period period);
 }

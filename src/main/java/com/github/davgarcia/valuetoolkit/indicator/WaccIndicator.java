@@ -1,7 +1,7 @@
 package com.github.davgarcia.valuetoolkit.indicator;
 
 import com.github.davgarcia.valuetoolkit.BusinessIndicator;
-import com.github.davgarcia.valuetoolkit.config.EconomyConfigProperties;
+import com.github.davgarcia.valuetoolkit.config.ValueToolkitConfigProperties;
 import com.github.davgarcia.valuetoolkit.domain.Business;
 import com.github.davgarcia.valuetoolkit.domain.Period;
 
@@ -14,7 +14,7 @@ public class WaccIndicator implements BusinessIndicator {
     }
 
     @Override
-    public double eval(final EconomyConfigProperties economy, final Business business) {
+    public double eval(final ValueToolkitConfigProperties params, final Business business) {
         final var period = business.getNewestPeriod(Period.Status.ACTUAL);
 
         final var e = business.getProfile().getMarketCap();

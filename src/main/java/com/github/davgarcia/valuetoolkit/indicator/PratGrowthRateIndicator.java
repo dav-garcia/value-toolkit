@@ -1,6 +1,6 @@
 package com.github.davgarcia.valuetoolkit.indicator;
 
-import com.github.davgarcia.valuetoolkit.config.EconomyConfigProperties;
+import com.github.davgarcia.valuetoolkit.config.ValueToolkitConfigProperties;
 import com.github.davgarcia.valuetoolkit.domain.Business;
 import com.github.davgarcia.valuetoolkit.domain.Period;
 
@@ -13,7 +13,7 @@ public class PratGrowthRateIndicator extends AbstractAverageIndicator {
     }
 
     @Override
-    public double eval(final EconomyConfigProperties economy, final Business business, final Period period) {
+    public double eval(final ValueToolkitConfigProperties params, final Business business, final Period period) {
         final var netIncome = period.getIncomeStatement().getNetIncome();
         final var revenue = period.getIncomeStatement().getRevenue();
         final var dividendsPaid = period.getCashFlowStatement().getDividendsPaid();

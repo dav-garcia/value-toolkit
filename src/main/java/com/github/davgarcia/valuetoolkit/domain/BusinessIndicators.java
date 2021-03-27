@@ -1,9 +1,10 @@
 package com.github.davgarcia.valuetoolkit.domain;
 
 import com.github.davgarcia.valuetoolkit.BusinessIndicator;
-import com.github.davgarcia.valuetoolkit.config.EconomyConfigProperties;
+import com.github.davgarcia.valuetoolkit.config.ValueToolkitConfigProperties;
 import com.github.davgarcia.valuetoolkit.indicator.CapmCostOfEquityIndicator;
 import com.github.davgarcia.valuetoolkit.indicator.CostOfDebtIndicator;
+import com.github.davgarcia.valuetoolkit.indicator.OwnerEarningsIndicator;
 import com.github.davgarcia.valuetoolkit.indicator.PratGrowthRateIndicator;
 import com.github.davgarcia.valuetoolkit.indicator.TaxRateIndicator;
 import com.github.davgarcia.valuetoolkit.indicator.TerminalGrowthRateIndicator;
@@ -32,12 +33,12 @@ public class BusinessIndicators {
         }
     }
 
-    private final EconomyConfigProperties economy;
+    private final ValueToolkitConfigProperties params;
     private final Business business;
     private final Map<BusinessIndicator, Evaluation> indicators;
 
-    public BusinessIndicators(final EconomyConfigProperties economy, final Business business) {
-        this.economy = economy;
+    public BusinessIndicators(final ValueToolkitConfigProperties params, final Business business) {
+        this.params = params;
         this.business = business;
         indicators = new HashMap<>();
     }
@@ -66,13 +67,17 @@ public class BusinessIndicators {
         return eval(WaccIndicator.INSTANCE);
     }
 
+    public double getOwnerEarnings() {
+        return eval(OwnerEarningsIndicator.INSTANCE);
+    }
+
     private double eval(final BusinessIndicator indicator) {
         var evaluation = indicators.get(indicator);
         if (evaluation == null) {
             evaluation = new Evaluation();
             indicators.put(indicator, evaluation);
 
-            evaluation.setValue(indicator.eval(economy, business));
+            evaluation.setValue(indicator.eval(params, business));
             evaluation.setEvaluating(false);
         } else if (evaluation.isEvaluating()) {
             throw new RuntimeException("Detected an infinite loop of indicators in: " + indicator.getClass().getSimpleName());

@@ -11,10 +11,10 @@ class PratGrowthRateIndicatorTest {
 
     @Test
     void givenBusinessThenComputeGrowthRate() {
-        final var economy = DomainObjectMother.economy();
+        final var params = DomainObjectMother.params();
         final var business = DomainObjectMother.business();
 
-        final var result = sut.eval(economy, business);
+        final var result = sut.eval(params, business);
 
         assertThat(result).isEqualTo(16.773416340697782);
     }

@@ -21,22 +21,11 @@ public class BusinessEstimates {
      */
     double growthRate;
 
-    /**
-     * The terminal growth rate is the weighted average of the GDP rate and the Single Stage Model rate.
-     * <br>
-     * This is used during DCF valuation. The default GDP weight is 0.5.
-     */
-    double gdpRateWeight;
-
     public int getGrowthYears(final int defaultValue) {
         return growthYears > 0 ? growthYears : defaultValue;
     }
 
     public double getGrowthRate(final double defaultValue) {
         return growthRate > 0d ? growthRate : defaultValue;
-    }
-
-    public double getGdpRateWeight(final double defaultValue) {
-        return gdpRateWeight > 0d ? gdpRateWeight : defaultValue;
     }
 }

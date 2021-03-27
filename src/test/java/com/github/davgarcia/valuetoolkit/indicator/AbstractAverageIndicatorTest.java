@@ -1,6 +1,6 @@
 package com.github.davgarcia.valuetoolkit.indicator;
 
-import com.github.davgarcia.valuetoolkit.config.EconomyConfigProperties;
+import com.github.davgarcia.valuetoolkit.config.ValueToolkitConfigProperties;
 import com.github.davgarcia.valuetoolkit.domain.Business;
 import com.github.davgarcia.valuetoolkit.domain.IncomeStatement;
 import com.github.davgarcia.valuetoolkit.domain.Period;
@@ -20,7 +20,7 @@ class AbstractAverageIndicatorTest {
         }
 
         @Override
-        protected double eval(final EconomyConfigProperties economy, final Business business, final Period period) {
+        protected double eval(final ValueToolkitConfigProperties params, final Business business, final Period period) {
             return period.getIncomeStatement().getRevenue();
         }
     }

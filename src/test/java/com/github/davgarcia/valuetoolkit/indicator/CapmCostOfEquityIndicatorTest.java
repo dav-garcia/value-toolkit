@@ -11,10 +11,10 @@ class CapmCostOfEquityIndicatorTest {
 
     @Test
     void givenBusinessThenComputeCostOfEquity() {
-        final var economy = DomainObjectMother.economy();
+        final var params = DomainObjectMother.params();
         final var business = DomainObjectMother.business();
 
-        final var result = sut.eval(economy, business);
+        final var result = sut.eval(params, business);
 
         assertThat(result).isEqualTo(5.5995297);
     }

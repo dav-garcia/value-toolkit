@@ -1,18 +1,14 @@
 package com.github.davgarcia.valuetoolkit.config;
 
 import com.github.davgarcia.valuetoolkit.domain.Business;
+import lombok.Builder;
 import lombok.Value;
-import lombok.experimental.NonFinal;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.ConstructorBinding;
 
 import java.util.Map;
 
-@ConfigurationProperties("economy")
-@ConstructorBinding
 @Value
-@NonFinal
-public class EconomyConfigProperties {
+@Builder
+public class EconomicFactors {
 
     private static final double M = 1000000;
 
@@ -26,12 +22,16 @@ public class EconomyConfigProperties {
     }
 
     /**
-     * Equity Risk Premium (ERP): http://pages.stern.nyu.edu/~adamodar/
+     * Equity Risk Premium (ERP), required.
+     * <br>
+     * See: http://pages.stern.nyu.edu/~adamodar/
      */
     double erp;
 
     /**
-     * Risk-free rates by currency, based on 10Y bond rates: https://www.bloomberg.com/markets/rates-bonds
+     * Risk-free rates by currency, based on 10Y bond rates. Required.
+     * <br>
+     * See: https://www.bloomberg.com/markets/rates-bonds
      */
     Map<String, Double> riskFreeRate;
 
@@ -46,7 +46,7 @@ public class EconomyConfigProperties {
     SizeRiskRate sizeRiskRate;
 
     /**
-     * Historical (average for a number of years) GDP growth rates by country.
+     * Historical (average for a number of years) GDP growth rates by country. Required.
      * <br>
      * List by the World Bank: https://en.wikipedia.org/wiki/List_of_countries_by_real_GDP_growth_rate
      */

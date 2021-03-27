@@ -1,6 +1,6 @@
 package com.github.davgarcia.valuetoolkit.indicator;
 
-import com.github.davgarcia.valuetoolkit.config.EconomyConfigProperties;
+import com.github.davgarcia.valuetoolkit.config.ValueToolkitConfigProperties;
 import com.github.davgarcia.valuetoolkit.domain.Business;
 import com.github.davgarcia.valuetoolkit.domain.Period;
 
@@ -13,7 +13,7 @@ public class TaxRateIndicator extends AbstractAverageIndicator {
     }
 
     @Override
-    public double eval(final EconomyConfigProperties economy, final Business business, final Period period) {
+    public double eval(final ValueToolkitConfigProperties params, final Business business, final Period period) {
         final var incomeTaxExpense = period.getIncomeStatement().getIncomeTaxExpense();
         final var incomeBeforeTax = period.getIncomeStatement().getIncomeBeforeTax();
 

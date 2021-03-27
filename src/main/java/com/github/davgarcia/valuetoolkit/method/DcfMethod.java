@@ -1,7 +1,7 @@
 package com.github.davgarcia.valuetoolkit.method;
 
 import com.github.davgarcia.valuetoolkit.ValuationMethod;
-import com.github.davgarcia.valuetoolkit.config.EconomyConfigProperties;
+import com.github.davgarcia.valuetoolkit.config.ValueToolkitConfigProperties;
 import com.github.davgarcia.valuetoolkit.domain.Business;
 import com.github.davgarcia.valuetoolkit.domain.Period;
 import org.slf4j.Logger;
@@ -13,7 +13,7 @@ public class DcfMethod implements ValuationMethod {
     private static final int DEFAULT_GROWTH_YEARS = 5;
 
     @Override
-    public double value(final EconomyConfigProperties economy, final Business business) {
+    public double value(final ValueToolkitConfigProperties params, final Business business) {
         final var period = business.getNewestPeriod(Period.Status.ACTUAL);
 
         final var growthYears = business.getEstimates().getGrowthYears(DEFAULT_GROWTH_YEARS);
