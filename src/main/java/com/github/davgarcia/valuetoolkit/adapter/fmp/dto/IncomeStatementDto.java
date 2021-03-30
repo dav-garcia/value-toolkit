@@ -21,7 +21,6 @@ public class IncomeStatementDto {
     double sellingAndMarketingExpenses;
     double otherExpenses;
     double operatingExpenses;
-    double costAndExpenses;
     double interestExpense;
     double depreciationAndAmortization;
     double ebitda;

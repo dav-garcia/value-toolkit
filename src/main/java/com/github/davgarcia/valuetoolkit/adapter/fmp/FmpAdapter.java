@@ -1,9 +1,9 @@
 package com.github.davgarcia.valuetoolkit.adapter.fmp;
 
 import com.github.davgarcia.valuetoolkit.BusinessDataProvider;
-import com.github.davgarcia.valuetoolkit.domain.BusinessLocator;
-import com.github.davgarcia.valuetoolkit.domain.BusinessProfile;
-import com.github.davgarcia.valuetoolkit.domain.Period;
+import com.github.davgarcia.valuetoolkit.BusinessLocator;
+import com.github.davgarcia.valuetoolkit.BusinessProfile;
+import com.github.davgarcia.valuetoolkit.Period;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.time.Clock;

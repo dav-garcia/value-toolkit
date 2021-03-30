@@ -1,9 +1,9 @@
 package com.github.davgarcia.valuetoolkit.adapter.yfinance;
 
 import com.github.davgarcia.valuetoolkit.BusinessDataProvider;
-import com.github.davgarcia.valuetoolkit.domain.BusinessLocator;
-import com.github.davgarcia.valuetoolkit.domain.BusinessProfile;
-import com.github.davgarcia.valuetoolkit.domain.Period;
+import com.github.davgarcia.valuetoolkit.BusinessLocator;
+import com.github.davgarcia.valuetoolkit.BusinessProfile;
+import com.github.davgarcia.valuetoolkit.Period;
 
 import java.time.LocalDate;
 import java.util.List;

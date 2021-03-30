@@ -1,7 +1,7 @@
 package com.github.davgarcia.valuetoolkit.adapter.fmp;
 
-import com.github.davgarcia.valuetoolkit.DomainObjectMother;
-import com.github.davgarcia.valuetoolkit.TimeMachine;
+import com.github.davgarcia.valuetoolkit.support.DomainObjectMother;
+import com.github.davgarcia.valuetoolkit.support.TimeMachine;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 import org.mockserver.client.MockServerClient;

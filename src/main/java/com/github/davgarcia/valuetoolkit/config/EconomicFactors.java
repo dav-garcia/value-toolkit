@@ -1,6 +1,6 @@
 package com.github.davgarcia.valuetoolkit.config;
 
-import com.github.davgarcia.valuetoolkit.domain.Business;
+import com.github.davgarcia.valuetoolkit.Business;
 import lombok.Builder;
 import lombok.Value;
 

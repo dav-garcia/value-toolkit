@@ -1,7 +1,7 @@
 package com.github.davgarcia.valuetoolkit.adapter.local;
 
 import com.github.davgarcia.valuetoolkit.BusinessDataProvider;
-import com.github.davgarcia.valuetoolkit.DomainObjectMother;
+import com.github.davgarcia.valuetoolkit.support.DomainObjectMother;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import org.apache.commons.io.IOUtils;

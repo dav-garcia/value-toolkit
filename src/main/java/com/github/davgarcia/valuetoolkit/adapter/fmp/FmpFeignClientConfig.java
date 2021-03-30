@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.davgarcia.valuetoolkit.adapter.fmp.dto.BusinessProfileMixin;
-import com.github.davgarcia.valuetoolkit.domain.BusinessProfile;
+import com.github.davgarcia.valuetoolkit.BusinessProfile;
 import feign.RequestInterceptor;
 import feign.codec.Decoder;
 import org.springframework.beans.factory.ObjectFactory;
@@ -24,18 +24,18 @@ public class FmpFeignClientConfig {
 
     @Bean
     public Decoder fmpFeignClientDecoder() {
-        final var jacksonConverter = new MappingJackson2HttpMessageConverter(customObjectMapper());
+        final var jacksonConverter = new MappingJackson2HttpMessageConverter(buildObjectMapper());
         ObjectFactory<HttpMessageConverters> objectFactory = () -> new HttpMessageConverters(jacksonConverter);
         return new ResponseEntityDecoder(new SpringDecoder(objectFactory));
     }
 
-    private ObjectMapper customObjectMapper() {
-        final var objectMapper = new ObjectMapper();
+    private ObjectMapper buildObjectMapper() {
+        final var result = new ObjectMapper();
 
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+        result.registerModule(new JavaTimeModule())
+                .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                 .addMixIn(BusinessProfile.class, BusinessProfileMixin.class);
 
-        return objectMapper;
+        return result;
     }
 }

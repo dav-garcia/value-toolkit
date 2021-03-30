@@ -7,9 +7,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.davgarcia.valuetoolkit.BusinessDataProvider;
-import com.github.davgarcia.valuetoolkit.domain.BusinessLocator;
-import com.github.davgarcia.valuetoolkit.domain.BusinessProfile;
-import com.github.davgarcia.valuetoolkit.domain.Period;
+import com.github.davgarcia.valuetoolkit.BusinessLocator;
+import com.github.davgarcia.valuetoolkit.BusinessProfile;
+import com.github.davgarcia.valuetoolkit.Period;
+import com.github.davgarcia.valuetoolkit.adapter.local.dto.PeriodMixin;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -33,16 +34,22 @@ public class LocalAdapterWrapper implements BusinessDataProvider {
     public LocalAdapterWrapper(final BusinessDataProvider wrappedAdapter, final Path localDir) {
         this.wrappedAdapter = wrappedAdapter;
         this.localDir = localDir;
-        objectMapper = new ObjectMapper();
-
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL)
-                .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-                .enable(SerializationFeature.INDENT_OUTPUT);
-        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
-
+        objectMapper = buildObjectMapper();
         profileType = objectMapper.getTypeFactory().constructType(BusinessProfile.class);
         periodsType = objectMapper.getTypeFactory().constructCollectionType(List.class, Period.class);
+    }
+
+    private ObjectMapper buildObjectMapper() {
+        final var result = new ObjectMapper();
+
+        result.registerModule(new JavaTimeModule())
+                .setDateFormat(new SimpleDateFormat("yyyy-MM-dd"))
+                .setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL)
+                .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+                .enable(SerializationFeature.INDENT_OUTPUT)
+                .addMixIn(Period.class, PeriodMixin.class);
+
+        return result;
     }
 
     @Override

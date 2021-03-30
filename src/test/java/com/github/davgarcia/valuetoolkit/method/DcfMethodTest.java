@@ -1,6 +1,6 @@
 package com.github.davgarcia.valuetoolkit.method;
 
-import com.github.davgarcia.valuetoolkit.DomainObjectMother;
+import com.github.davgarcia.valuetoolkit.support.DomainObjectMother;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

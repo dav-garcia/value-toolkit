@@ -1,9 +1,5 @@
 package com.github.davgarcia.valuetoolkit;
 
-import com.github.davgarcia.valuetoolkit.domain.BusinessLocator;
-import com.github.davgarcia.valuetoolkit.domain.BusinessProfile;
-import com.github.davgarcia.valuetoolkit.domain.Period;
-
 import java.time.LocalDate;
 import java.util.List;
 

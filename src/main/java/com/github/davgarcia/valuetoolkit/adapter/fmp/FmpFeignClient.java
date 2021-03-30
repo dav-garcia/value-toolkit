@@ -3,7 +3,7 @@ package com.github.davgarcia.valuetoolkit.adapter.fmp;
 import com.github.davgarcia.valuetoolkit.adapter.fmp.dto.BalanceSheetDto;
 import com.github.davgarcia.valuetoolkit.adapter.fmp.dto.CashFlowStatementDto;
 import com.github.davgarcia.valuetoolkit.adapter.fmp.dto.IncomeStatementDto;
-import com.github.davgarcia.valuetoolkit.domain.BusinessProfile;
+import com.github.davgarcia.valuetoolkit.BusinessProfile;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
