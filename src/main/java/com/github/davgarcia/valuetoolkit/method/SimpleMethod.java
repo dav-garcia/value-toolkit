@@ -1,6 +1,6 @@
 package com.github.davgarcia.valuetoolkit.method;
 
-import com.github.davgarcia.valuetoolkit.Business;
+import com.github.davgarcia.valuetoolkit.Company;
 import com.github.davgarcia.valuetoolkit.Period;
 import com.github.davgarcia.valuetoolkit.ValuationMethod;
 import com.github.davgarcia.valuetoolkit.config.ValueToolkitConfigProperties;
@@ -13,18 +13,18 @@ public class SimpleMethod implements ValuationMethod {
     private static final int FORECAST_YEARS = 5;
 
     @Override
-    public double value(final ValueToolkitConfigProperties params, final Business business) {
-        final var period = business.getLatestPeriod(Period.Status.ACTUAL);
+    public double value(final ValueToolkitConfigProperties params, final Company company) {
+        final var period = company.getLatestPeriod(Period.Status.ACTUAL);
 
         final var revenue = period.getIncomeStatement().getRevenue();
-        final var profitMargin = business.getIndicators().getProfitMargin();
-        final var growthRate = business.getEstimates().getRevenueCagr(business.getIndicators().getPratGrowthRate());
+        final var profitMargin = company.getIndicators().getProfitMargin();
+        final var growthRate = company.getEstimates().getRevenueCagr(company.getIndicators().getPratGrowthRate());
         final var sharesOutstanding = period.getIncomeStatement().getWeightedAverageSharesOutstanding();
-        final var targetPer = business.getEstimates().getPerTarget(); // TODO: Use industry average as default value.
+        final var targetPer = company.getEstimates().getPerTarget(); // TODO: Use industry average as default value.
 
         if (LOG.isInfoEnabled()) {
             LOG.info(String.format("%s simple: revenue = %f, profit margin = %f, growth rate = %f, 5Y target per = %f",
-                    business.getLocator(), revenue, profitMargin, growthRate, targetPer));
+                    company.getLocator(), revenue, profitMargin, growthRate, targetPer));
         }
 
         return revenue * profitMargin * Math.pow(1 + growthRate / 100d, FORECAST_YEARS) / sharesOutstanding * targetPer;

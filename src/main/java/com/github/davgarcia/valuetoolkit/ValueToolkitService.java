@@ -5,14 +5,14 @@ import com.github.davgarcia.valuetoolkit.config.ValueToolkitConfigProperties;
 public class ValueToolkitService {
 
     private final ValueToolkitConfigProperties params;
-    private final BusinessDataProvider provider;
+    private final CompanyDataProvider provider;
 
-    public ValueToolkitService(final ValueToolkitConfigProperties params, final BusinessDataProvider provider) {
+    public ValueToolkitService(final ValueToolkitConfigProperties params, final CompanyDataProvider provider) {
         this.params = params;
         this.provider = provider;
     }
 
-    public BusinessResult analyze(final BusinessLocator locator) {
+    public CompanyResult analyze(final CompanyLocator locator) {
         return null;
     }
 }

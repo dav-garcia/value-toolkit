@@ -3,7 +3,7 @@ package com.github.davgarcia.valuetoolkit.support;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.github.davgarcia.valuetoolkit.BusinessProfile;
+import com.github.davgarcia.valuetoolkit.CompanyProfile;
 import com.github.davgarcia.valuetoolkit.adapter.fmp.FmpFeignClient;
 import com.github.davgarcia.valuetoolkit.adapter.fmp.dto.BalanceSheetDto;
 import com.github.davgarcia.valuetoolkit.adapter.fmp.dto.CashFlowStatementDto;
@@ -28,7 +28,7 @@ public class FakeFmpFeignClient implements FmpFeignClient {
     }
 
     @Override
-    public BusinessProfile[] getBusinessProfile(final String id) {
+    public CompanyProfile[] getCompanyProfile(final String id) {
         return null;
     }
 

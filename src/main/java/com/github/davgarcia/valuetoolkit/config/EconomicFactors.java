@@ -1,6 +1,6 @@
 package com.github.davgarcia.valuetoolkit.config;
 
-import com.github.davgarcia.valuetoolkit.Business;
+import com.github.davgarcia.valuetoolkit.Company;
 import lombok.Builder;
 import lombok.Value;
 
@@ -52,24 +52,24 @@ public class EconomicFactors {
      */
     Map<String, Double> gdpGrowthRate;
 
-    public double getRiskFreeRate(final Business business) {
-        return riskFreeRate.get(business.getProfile().getCurrency().toLowerCase());
+    public double getRiskFreeRate(final Company company) {
+        return riskFreeRate.get(company.getProfile().getCurrency().toLowerCase());
     }
 
-    public double getCounrtyRiskRate(final Business business) {
+    public double getCounrtyRiskRate(final Company company) {
         if (countryRiskRate == null) {
             return 0d;
         }
 
-        return countryRiskRate.getOrDefault(business.getProfile().getCountry().toLowerCase(), 0d);
+        return countryRiskRate.getOrDefault(company.getProfile().getCountry().toLowerCase(), 0d);
     }
 
-    public double getSizeRiskRate(final Business business) {
+    public double getSizeRiskRate(final Company company) {
         if (sizeRiskRate == null) {
             return 0d;
         }
 
-        final var marketCap = business.getProfile().getMarketCap();
+        final var marketCap = company.getProfile().getMarketCap();
         if (marketCap > 4000 * M) {
             return valueOrDefault(sizeRiskRate.large, 0d);
         } else if (marketCap > 800 * M) {
@@ -80,8 +80,8 @@ public class EconomicFactors {
         return valueOrDefault(sizeRiskRate.micro, 0d);
     }
 
-    public double getGdpGrowthRate(final Business business) {
-        return gdpGrowthRate.get(business.getProfile().getCountry().toLowerCase());
+    public double getGdpGrowthRate(final Company company) {
+        return gdpGrowthRate.get(company.getProfile().getCountry().toLowerCase());
     }
 
     private double valueOrDefault(final Double value, final double defaultValue) {

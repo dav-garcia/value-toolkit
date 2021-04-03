@@ -1,6 +1,6 @@
 package com.github.davgarcia.valuetoolkit.adapter.local;
 
-import com.github.davgarcia.valuetoolkit.BusinessDataProvider;
+import com.github.davgarcia.valuetoolkit.CompanyDataProvider;
 import com.github.davgarcia.valuetoolkit.support.DomainObjectMother;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
@@ -33,7 +33,7 @@ class LocalAdapterWrapperTest {
     private static final LocalDate LAST_YEAR = LocalDate.ofYearDay(2020, 1);
 
     @Mock
-    private BusinessDataProvider provider;
+    private CompanyDataProvider provider;
     private FileSystem fileSystem;
     private LocalAdapterWrapper sut;
 
@@ -49,11 +49,11 @@ class LocalAdapterWrapperTest {
 
     @Test
     void givenNoLocalProfileWhenGetThenSave() throws IOException {
-        final var locator = DomainObjectMother.businessLocator();
-        final var profile = DomainObjectMother.businessProfile();
-        doReturn(profile).when(provider).getBusinessProfile(locator);
+        final var locator = DomainObjectMother.companyLocator();
+        final var profile = DomainObjectMother.companyProfile();
+        doReturn(profile).when(provider).getCompanyProfile(locator);
 
-        final var resultObject = sut.getBusinessProfile(locator);
+        final var resultObject = sut.getCompanyProfile(locator);
         final var resultJson = Files.readString(fileSystem.getPath(PROFILE_NAME));
 
         assertThat(resultObject).isEqualTo(profile);
@@ -64,16 +64,16 @@ class LocalAdapterWrapperTest {
     void givenLocalProfileWhenGetThenReturnIt() throws IOException {
         Files.writeString(fileSystem.getPath(PROFILE_NAME), loadResource("local", PROFILE_NAME));
 
-        final var result = sut.getBusinessProfile(DomainObjectMother.businessLocator());
+        final var result = sut.getCompanyProfile(DomainObjectMother.companyLocator());
 
-        assertThat(result).isEqualTo(DomainObjectMother.businessProfile());
-        verify(provider, never()).getBusinessProfile(any());
+        assertThat(result).isEqualTo(DomainObjectMother.companyProfile());
+        verify(provider, never()).getCompanyProfile(any());
     }
 
     @Test
     void givenNoLocalPeriodsWhenGetThenSave() throws IOException {
-        final var locator = DomainObjectMother.businessLocator();
-        final var periods = DomainObjectMother.business().getPeriods();
+        final var locator = DomainObjectMother.companyLocator();
+        final var periods = DomainObjectMother.company().getPeriods();
         doReturn(periods).when(provider).getFiscalYears(locator, FIRST_YEAR, LAST_YEAR);
 
         final var resultObject = sut.getFiscalYears(locator, FIRST_YEAR, LAST_YEAR);
@@ -87,9 +87,9 @@ class LocalAdapterWrapperTest {
     void givenLocalPeriodsWhenGetThenReturnThem() throws IOException {
         Files.writeString(fileSystem.getPath(PERIODS_NAME), loadResource("local", PERIODS_NAME));
 
-        final var result = sut.getFiscalYears(DomainObjectMother.businessLocator(), FIRST_YEAR, LAST_YEAR);
+        final var result = sut.getFiscalYears(DomainObjectMother.companyLocator(), FIRST_YEAR, LAST_YEAR);
 
-        assertThat(result).isEqualTo(DomainObjectMother.business().getPeriods());
+        assertThat(result).isEqualTo(DomainObjectMother.company().getPeriods());
         verify(provider, never()).getFiscalYears(any(), any(), any());
     }
 

@@ -40,9 +40,9 @@ class FmpAdapterTest {
     void givenLocatorThenDownloadProfile() throws IOException {
         setupFmpMock(PROFILE_FILENAME, "/profile/MSFT");
 
-        final var result = sut.getBusinessProfile(DomainObjectMother.businessLocator());
+        final var result = sut.getCompanyProfile(DomainObjectMother.companyLocator());
 
-        assertThat(result).isEqualTo(DomainObjectMother.businessProfile());
+        assertThat(result).isEqualTo(DomainObjectMother.companyProfile());
     }
 
     @Test
@@ -53,7 +53,7 @@ class FmpAdapterTest {
             setupFmpMock(BALANCE_FILENAME, "/balance-sheet-statement/MSFT", param("limit", "5"));
             setupFmpMock(CASHFLOW_FILENAME, "/cash-flow-statement/MSFT", param("limit", "5"));
 
-            final var result = sut.getFiscalYears(DomainObjectMother.businessLocator(),
+            final var result = sut.getFiscalYears(DomainObjectMother.companyLocator(),
                     LocalDate.ofYearDay(2016, 1), LocalDate.ofYearDay(2020, 1));
 
             assertThat(result).hasSize(5);

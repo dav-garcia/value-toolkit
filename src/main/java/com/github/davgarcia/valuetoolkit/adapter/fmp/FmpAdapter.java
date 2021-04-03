@@ -1,8 +1,8 @@
 package com.github.davgarcia.valuetoolkit.adapter.fmp;
 
-import com.github.davgarcia.valuetoolkit.BusinessDataProvider;
-import com.github.davgarcia.valuetoolkit.BusinessLocator;
-import com.github.davgarcia.valuetoolkit.BusinessProfile;
+import com.github.davgarcia.valuetoolkit.CompanyDataProvider;
+import com.github.davgarcia.valuetoolkit.CompanyLocator;
+import com.github.davgarcia.valuetoolkit.CompanyProfile;
 import com.github.davgarcia.valuetoolkit.Period;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -17,7 +17,7 @@ import java.util.stream.IntStream;
  * <p>
  * Doc: https://financialmodelingprep.com/developer/docs/
  */
-public class FmpAdapter implements BusinessDataProvider {
+public class FmpAdapter implements CompanyDataProvider {
 
     private final FmpFeignClient feignClient;
 
@@ -38,13 +38,13 @@ public class FmpAdapter implements BusinessDataProvider {
     }
 
     @Override
-    public BusinessProfile getBusinessProfile(final BusinessLocator locator) {
-        final var profiles = feignClient.getBusinessProfile(buildId(locator));
+    public CompanyProfile getCompanyProfile(final CompanyLocator locator) {
+        final var profiles = feignClient.getCompanyProfile(buildId(locator));
         return profiles.length == 1 ? profiles[0] : null;
     }
 
     @Override
-    public List<Period> getFiscalYears(final BusinessLocator locator, final LocalDate first, final LocalDate last) {
+    public List<Period> getFiscalYears(final CompanyLocator locator, final LocalDate first, final LocalDate last) {
         final var periodBuilders = IntStream.rangeClosed(first.getYear(), last.getYear())
                 .mapToObj(y -> Pair.of(y, Period.builder()
                         .type(Period.Type.YEAR)
@@ -84,11 +84,11 @@ public class FmpAdapter implements BusinessDataProvider {
     }
 
     @Override
-    public List<Period> getQuarters(final BusinessLocator locator, final LocalDate first, final LocalDate last) {
+    public List<Period> getQuarters(final CompanyLocator locator, final LocalDate first, final LocalDate last) {
         return null;
     }
 
-    private String buildId(final BusinessLocator locator) {
+    private String buildId(final CompanyLocator locator) {
         final var suffix = FmpExchange.suffixForValue(locator.getExchange());
         return suffix == null ? locator.getSymbol() :
                 String.format("%s.%s", locator.getSymbol(), suffix);

@@ -11,7 +11,7 @@ class RoeIndicatorTest {
 
     @Test
     void givenPeriodThenComputeRoe() {
-        final var period = DomainObjectMother.business().getLatestPeriod();
+        final var period = DomainObjectMother.company().getLatestPeriod();
 
         final var result = sut.eval(period);
 

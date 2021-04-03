@@ -1,8 +1,8 @@
 package com.github.davgarcia.valuetoolkit.adapter.yfinance;
 
-import com.github.davgarcia.valuetoolkit.BusinessDataProvider;
-import com.github.davgarcia.valuetoolkit.BusinessLocator;
-import com.github.davgarcia.valuetoolkit.BusinessProfile;
+import com.github.davgarcia.valuetoolkit.CompanyDataProvider;
+import com.github.davgarcia.valuetoolkit.CompanyLocator;
+import com.github.davgarcia.valuetoolkit.CompanyProfile;
 import com.github.davgarcia.valuetoolkit.Period;
 
 import java.time.LocalDate;
@@ -13,20 +13,20 @@ import java.util.List;
  * <p>
  * Python Lib: https://github.com/ranaroussi/yfinance
  */
-public class YahooFinanceAdapter implements BusinessDataProvider {
+public class YahooFinanceAdapter implements CompanyDataProvider {
 
     @Override
-    public BusinessProfile getBusinessProfile(final BusinessLocator locator) {
+    public CompanyProfile getCompanyProfile(final CompanyLocator locator) {
         return null;
     }
 
     @Override
-    public List<Period> getFiscalYears(final BusinessLocator locator, final LocalDate first, final LocalDate last) {
+    public List<Period> getFiscalYears(final CompanyLocator locator, final LocalDate first, final LocalDate last) {
         return null;
     }
 
     @Override
-    public List<Period> getQuarters(final BusinessLocator locator, final LocalDate first, final LocalDate last) {
+    public List<Period> getQuarters(final CompanyLocator locator, final LocalDate first, final LocalDate last) {
         return null;
     }
 }

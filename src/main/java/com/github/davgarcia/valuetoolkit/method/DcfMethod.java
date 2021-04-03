@@ -2,7 +2,7 @@ package com.github.davgarcia.valuetoolkit.method;
 
 import com.github.davgarcia.valuetoolkit.ValuationMethod;
 import com.github.davgarcia.valuetoolkit.config.ValueToolkitConfigProperties;
-import com.github.davgarcia.valuetoolkit.Business;
+import com.github.davgarcia.valuetoolkit.Company;
 import com.github.davgarcia.valuetoolkit.Period;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,28 +13,28 @@ public class DcfMethod implements ValuationMethod {
     private static final int DEFAULT_GROWTH_YEARS = 5;
 
     @Override
-    public double value(final ValueToolkitConfigProperties params, final Business business) {
-        final var period = business.getLatestPeriod(Period.Status.ACTUAL);
+    public double value(final ValueToolkitConfigProperties params, final Company company) {
+        final var period = company.getLatestPeriod(Period.Status.ACTUAL);
 
-        final var growthYears = business.getEstimates().getGrowthYears(DEFAULT_GROWTH_YEARS);
+        final var growthYears = company.getEstimates().getGrowthYears(DEFAULT_GROWTH_YEARS);
         final var fcf0 = period.getCashFlowStatement().getFreeCashFlow();
-        final var growthRate0 = business.getEstimates().getFcfCagr(business.getIndicators().getPratGrowthRate()) / 100d;
-        final var discountRate = business.getIndicators().getWacc() / 100d;
-        final var terminalGrowthRate = business.getIndicators().getTerminalGrowthRate() / 100d;
+        final var growthRate0 = company.getEstimates().getFcfCagr(company.getIndicators().getPratGrowthRate()) / 100d;
+        final var discountRate = company.getIndicators().getWacc() / 100d;
+        final var terminalGrowthRate = company.getIndicators().getTerminalGrowthRate() / 100d;
         final var sharesOutstanding = period.getIncomeStatement().getWeightedAverageSharesOutstanding();
 
-        final var growthStage = computeGrowthStage(business, growthYears, fcf0, growthRate0, discountRate, terminalGrowthRate);
-        final var terminalStage = computeTerminalStage(business, growthYears, fcf0, discountRate, terminalGrowthRate);
+        final var growthStage = computeGrowthStage(company, growthYears, fcf0, growthRate0, discountRate, terminalGrowthRate);
+        final var terminalStage = computeTerminalStage(company, growthYears, fcf0, discountRate, terminalGrowthRate);
 
         return (growthStage + terminalStage) / sharesOutstanding;
     }
 
-    private double computeGrowthStage(final Business business, final int growthYears,
+    private double computeGrowthStage(final Company company, final int growthYears,
                                       final double fcf0, final double growthRate0, final double discountRate, final double terminalGrowthRate) {
         // Interpolate growth rate from initial value down to terminal growth rate.
         if (LOG.isInfoEnabled()) {
             LOG.info(String.format("%s growth stage: years = %d, discount rate = %f:",
-                    business.getLocator().getSymbol(), growthYears, discountRate));
+                    company.getLocator().getSymbol(), growthYears, discountRate));
         }
         double fcfi = fcf0;
         double growthStage = 0d;
@@ -51,14 +51,14 @@ public class DcfMethod implements ValuationMethod {
         return growthStage;
     }
 
-    private double computeTerminalStage(final Business business, final int growthYears,
+    private double computeTerminalStage(final Company company, final int growthYears,
                                         final double fcf0, final double discountRate, final double terminalGrowthRate) {
         final var terminalStage = fcf0 * Math.pow(1d + terminalGrowthRate, growthYears + 1d)
                 / (discountRate - terminalGrowthRate)
                 / Math.pow(1d + discountRate, growthYears + 1d);
         if (LOG.isInfoEnabled()) {
             LOG.info(String.format("%s terminal stage: terminal growth rate = %f, total = %f",
-                    business.getLocator().getSymbol(), terminalGrowthRate, terminalStage));
+                    company.getLocator().getSymbol(), terminalGrowthRate, terminalStage));
         }
         return terminalStage;
     }

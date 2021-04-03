@@ -10,11 +10,11 @@ class OwnerEarningsMethodTest {
     private final OwnerEarningsMethod sut = new OwnerEarningsMethod();
 
     @Test
-    void givenBusinessThenComputeOwnerEarnings() {
+    void givenCompanyThenComputeOwnerEarnings() {
         final var params = DomainObjectMother.params();
-        final var business = DomainObjectMother.business();
+        final var company = DomainObjectMother.company();
 
-        final var result = sut.value(params, business);
+        final var result = sut.value(params, company);
 
         assertThat(result).isEqualTo(88.91392904073587);
     }

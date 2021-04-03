@@ -12,11 +12,11 @@ class SimpleMethodTest {
     private final SimpleMethod sut = new SimpleMethod();
 
     @Test
-    void givenBusinessThenComputeSimple() throws IOException {
+    void givenCompanyThenComputeSimple() throws IOException {
         final var params = DomainObjectMother.params();
-        final var business = DomainObjectMother.business();
+        final var company = DomainObjectMother.company();
 
-        final var result = sut.value(params, business);
+        final var result = sut.value(params, company);
 
         assertThat(result).isEqualTo(255.8534469945909);
     }

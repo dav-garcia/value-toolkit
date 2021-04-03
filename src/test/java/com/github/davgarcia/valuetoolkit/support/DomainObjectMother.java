@@ -1,11 +1,11 @@
 package com.github.davgarcia.valuetoolkit.support;
 
 import com.github.davgarcia.valuetoolkit.BalanceSheet;
-import com.github.davgarcia.valuetoolkit.Business;
-import com.github.davgarcia.valuetoolkit.BusinessEstimates;
-import com.github.davgarcia.valuetoolkit.BusinessIndicators;
-import com.github.davgarcia.valuetoolkit.BusinessLocator;
-import com.github.davgarcia.valuetoolkit.BusinessProfile;
+import com.github.davgarcia.valuetoolkit.Company;
+import com.github.davgarcia.valuetoolkit.CompanyEstimates;
+import com.github.davgarcia.valuetoolkit.CompanyIndicators;
+import com.github.davgarcia.valuetoolkit.CompanyLocator;
+import com.github.davgarcia.valuetoolkit.CompanyProfile;
 import com.github.davgarcia.valuetoolkit.CashFlowStatement;
 import com.github.davgarcia.valuetoolkit.IncomeStatement;
 import com.github.davgarcia.valuetoolkit.PeriodIndicators;
@@ -28,8 +28,8 @@ public class DomainObjectMother {
                     .build(),
             ValuationFactors.builder()
                     .build());
-    private static final BusinessLocator BUSINESS_LOCATOR = new BusinessLocator("NASDAQ", "MSFT");
-    private static final BusinessProfile BUSINESS_PROFILE = BusinessProfile.builder()
+    private static final CompanyLocator BUSINESS_LOCATOR = new CompanyLocator("NASDAQ", "MSFT");
+    private static final CompanyProfile BUSINESS_PROFILE = CompanyProfile.builder()
             .name("Microsoft Corp")
             .description("Microsoft Corporation develops, licenses, and supports software, services, devices, and solutions worldwide...")
             .ceo("Mr. Satya Nadella")
@@ -137,14 +137,14 @@ public class DomainObjectMother {
             .capitalExpenditure(-15441000000d)
             .freeCashFlow(45234000000d)
             .build();
-    private static final BusinessEstimates BUSINESS_ESTIMATES = BusinessEstimates.builder()
+    private static final CompanyEstimates BUSINESS_ESTIMATES = CompanyEstimates.builder()
             .growthYears(10)
             .perTarget(30d)
             .revenueCagr(12.5)
             .fcfCagr(12.5)
             .build();
 
-    private static final Business BUSINESS = Business.builder()
+    private static final Company COMPANY = Company.builder()
             .locator(BUSINESS_LOCATOR)
             .profile(BUSINESS_PROFILE)
             // Beware this is using real fiscal years from 2016 to 2020!
@@ -161,11 +161,11 @@ public class DomainObjectMother {
         return PARAMS;
     }
 
-    public static BusinessLocator businessLocator() {
+    public static CompanyLocator companyLocator() {
         return BUSINESS_LOCATOR;
     }
 
-    public static BusinessProfile businessProfile() {
+    public static CompanyProfile companyProfile() {
         return BUSINESS_PROFILE;
     }
 
@@ -181,15 +181,15 @@ public class DomainObjectMother {
         return CASH_FLOW_STATEMENT_2020;
     }
 
-    public static BusinessEstimates businessEstimates() {
+    public static CompanyEstimates companyEstimates() {
         return BUSINESS_ESTIMATES;
     }
 
-    public static Business business() {
-        if (BUSINESS.getIndicators() == null) {
-            BUSINESS.setIndicators(new BusinessIndicators(PARAMS, BUSINESS));
-            BUSINESS.getPeriods().forEach(p -> p.setIndicators(new PeriodIndicators(p)));
+    public static Company company() {
+        if (COMPANY.getIndicators() == null) {
+            COMPANY.setIndicators(new CompanyIndicators(PARAMS, COMPANY));
+            COMPANY.getPeriods().forEach(p -> p.setIndicators(new PeriodIndicators(p)));
         }
-        return BUSINESS;
+        return COMPANY;
     }
 }

@@ -6,9 +6,9 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.github.davgarcia.valuetoolkit.BusinessDataProvider;
-import com.github.davgarcia.valuetoolkit.BusinessLocator;
-import com.github.davgarcia.valuetoolkit.BusinessProfile;
+import com.github.davgarcia.valuetoolkit.CompanyDataProvider;
+import com.github.davgarcia.valuetoolkit.CompanyLocator;
+import com.github.davgarcia.valuetoolkit.CompanyProfile;
 import com.github.davgarcia.valuetoolkit.Period;
 import com.github.davgarcia.valuetoolkit.adapter.local.dto.PeriodMixin;
 
@@ -20,22 +20,22 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class LocalAdapterWrapper implements BusinessDataProvider {
+public class LocalAdapterWrapper implements CompanyDataProvider {
 
     private static final String PROFILE = "profile";
     private static final String PERIODS = "periods";
 
-    private final BusinessDataProvider wrappedAdapter;
+    private final CompanyDataProvider wrappedAdapter;
     private final Path localDir;
     private final ObjectMapper objectMapper;
     private final JavaType profileType;
     private final JavaType periodsType;
 
-    public LocalAdapterWrapper(final BusinessDataProvider wrappedAdapter, final Path localDir) {
+    public LocalAdapterWrapper(final CompanyDataProvider wrappedAdapter, final Path localDir) {
         this.wrappedAdapter = wrappedAdapter;
         this.localDir = localDir;
         objectMapper = buildObjectMapper();
-        profileType = objectMapper.getTypeFactory().constructType(BusinessProfile.class);
+        profileType = objectMapper.getTypeFactory().constructType(CompanyProfile.class);
         periodsType = objectMapper.getTypeFactory().constructCollectionType(List.class, Period.class);
     }
 
@@ -53,17 +53,17 @@ public class LocalAdapterWrapper implements BusinessDataProvider {
     }
 
     @Override
-    public BusinessProfile getBusinessProfile(final BusinessLocator locator) {
-        BusinessProfile profile = load(locator, PROFILE, profileType);
+    public CompanyProfile getCompanyProfile(final CompanyLocator locator) {
+        CompanyProfile profile = load(locator, PROFILE, profileType);
         if (profile == null) {
-            profile = wrappedAdapter.getBusinessProfile(locator);
+            profile = wrappedAdapter.getCompanyProfile(locator);
             save(locator, PROFILE, profile);
         }
         return profile;
     }
 
     @Override
-    public List<Period> getFiscalYears(final BusinessLocator locator, final LocalDate first, final LocalDate last) {
+    public List<Period> getFiscalYears(final CompanyLocator locator, final LocalDate first, final LocalDate last) {
         final var suffix = String.format("%s-%s-%s", PERIODS, format(first), format(last));
 
         List<Period> periods = load(locator, suffix, periodsType);
@@ -75,7 +75,7 @@ public class LocalAdapterWrapper implements BusinessDataProvider {
     }
 
     @Override
-    public List<Period> getQuarters(final BusinessLocator locator, final LocalDate first, final LocalDate last) {
+    public List<Period> getQuarters(final CompanyLocator locator, final LocalDate first, final LocalDate last) {
         return null;
     }
 
@@ -83,7 +83,7 @@ public class LocalAdapterWrapper implements BusinessDataProvider {
         return date.format(DateTimeFormatter.BASIC_ISO_DATE);
     }
 
-    private <T> T load(final BusinessLocator locator, final String suffix, final JavaType type) {
+    private <T> T load(final CompanyLocator locator, final String suffix, final JavaType type) {
         final var path = buildPath(locator, suffix);
         if (!Files.isRegularFile(path)) {
             return null;
@@ -95,7 +95,7 @@ public class LocalAdapterWrapper implements BusinessDataProvider {
         }
     }
 
-    private <T> void save(final BusinessLocator locator, final String suffix, final T data) {
+    private <T> void save(final CompanyLocator locator, final String suffix, final T data) {
         final var path = buildPath(locator, suffix);
         try (final var os = Files.newOutputStream(path)) {
             objectMapper.writeValue(os, data);
@@ -104,7 +104,7 @@ public class LocalAdapterWrapper implements BusinessDataProvider {
         }
     }
 
-    private Path buildPath(final BusinessLocator locator, final String suffix) {
+    private Path buildPath(final CompanyLocator locator, final String suffix) {
         return localDir.resolve(String.format("%s.%s-%s.json", locator.getExchange(), locator.getSymbol(), suffix));
     }
 }
