@@ -3,10 +3,14 @@ package com.github.davgarcia.valuetoolkit;
 import com.github.davgarcia.valuetoolkit.config.ValueToolkitConfigProperties;
 import com.github.davgarcia.valuetoolkit.indicator.business.CapmCostOfEquityIndicator;
 import com.github.davgarcia.valuetoolkit.indicator.business.CostOfDebtIndicator;
+import com.github.davgarcia.valuetoolkit.indicator.business.ProfitMarginIndicator;
 import com.github.davgarcia.valuetoolkit.indicator.business.OwnerEarningsIndicator;
 import com.github.davgarcia.valuetoolkit.indicator.business.PegrTrailingIndicator;
 import com.github.davgarcia.valuetoolkit.indicator.business.PerTrailingIndicator;
 import com.github.davgarcia.valuetoolkit.indicator.business.PratGrowthRateIndicator;
+import com.github.davgarcia.valuetoolkit.indicator.business.PriceToBookValueIndicator;
+import com.github.davgarcia.valuetoolkit.indicator.business.PriceToFcfIndicator;
+import com.github.davgarcia.valuetoolkit.indicator.business.PriceToSalesIndicator;
 import com.github.davgarcia.valuetoolkit.indicator.business.TaxRateIndicator;
 import com.github.davgarcia.valuetoolkit.indicator.business.TerminalGrowthRateIndicator;
 import com.github.davgarcia.valuetoolkit.indicator.business.WaccIndicator;
@@ -72,12 +76,28 @@ public class BusinessIndicators {
         return eval(OwnerEarningsIndicator.INSTANCE);
     }
 
+    public double getProfitMargin() {
+        return eval(ProfitMarginIndicator.INSTANCE);
+    }
+
     public double getPerTrailing() {
         return eval(PerTrailingIndicator.INSTANCE);
     }
 
     public double getPegrTrailing() {
         return eval(PegrTrailingIndicator.INSTANCE);
+    }
+
+    public double getPriceToSales() {
+        return eval(PriceToSalesIndicator.INSTANCE);
+    }
+
+    public double getPriceToBookValue() {
+        return eval(PriceToBookValueIndicator.INSTANCE);
+    }
+
+    public double getPriceToFcf() {
+        return eval(PriceToFcfIndicator.INSTANCE);
     }
 
     private double eval(final BusinessIndicator indicator) {

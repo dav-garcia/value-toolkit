@@ -11,4 +11,8 @@ public class ValueToolkitService {
         this.params = params;
         this.provider = provider;
     }
+
+    public BusinessResult analyze(final BusinessLocator locator) {
+        return null;
+    }
 }

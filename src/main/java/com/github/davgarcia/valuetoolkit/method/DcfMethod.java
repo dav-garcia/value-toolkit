@@ -18,11 +18,19 @@ public class DcfMethod implements ValuationMethod {
 
         final var growthYears = business.getEstimates().getGrowthYears(DEFAULT_GROWTH_YEARS);
         final var fcf0 = period.getCashFlowStatement().getFreeCashFlow();
-        final var growthRate0 = business.getEstimates().getGrowthRate(business.getIndicators().getPratGrowthRate()) / 100d;
+        final var growthRate0 = business.getEstimates().getFcfCagr(business.getIndicators().getPratGrowthRate()) / 100d;
         final var discountRate = business.getIndicators().getWacc() / 100d;
         final var terminalGrowthRate = business.getIndicators().getTerminalGrowthRate() / 100d;
         final var sharesOutstanding = period.getIncomeStatement().getWeightedAverageSharesOutstanding();
 
+        final var growthStage = computeGrowthStage(business, growthYears, fcf0, growthRate0, discountRate, terminalGrowthRate);
+        final var terminalStage = computeTerminalStage(business, growthYears, fcf0, discountRate, terminalGrowthRate);
+
+        return (growthStage + terminalStage) / sharesOutstanding;
+    }
+
+    private double computeGrowthStage(final Business business, final int growthYears,
+                                      final double fcf0, final double growthRate0, final double discountRate, final double terminalGrowthRate) {
         // Interpolate growth rate from initial value down to terminal growth rate.
         if (LOG.isInfoEnabled()) {
             LOG.info(String.format("%s growth stage: years = %d, discount rate = %f:",
@@ -40,7 +48,11 @@ public class DcfMethod implements ValuationMethod {
             }
             growthRatei -= (growthRate0 - terminalGrowthRate) / growthYears;
         }
+        return growthStage;
+    }
 
+    private double computeTerminalStage(final Business business, final int growthYears,
+                                        final double fcf0, final double discountRate, final double terminalGrowthRate) {
         final var terminalStage = fcf0 * Math.pow(1d + terminalGrowthRate, growthYears + 1d)
                 / (discountRate - terminalGrowthRate)
                 / Math.pow(1d + discountRate, growthYears + 1d);
@@ -48,7 +60,6 @@ public class DcfMethod implements ValuationMethod {
             LOG.info(String.format("%s terminal stage: terminal growth rate = %f, total = %f",
                     business.getLocator().getSymbol(), terminalGrowthRate, terminalStage));
         }
-
-        return (growthStage + terminalStage) / sharesOutstanding;
+        return terminalStage;
     }
 }

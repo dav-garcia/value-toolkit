@@ -139,7 +139,9 @@ public class DomainObjectMother {
             .build();
     private static final BusinessEstimates BUSINESS_ESTIMATES = BusinessEstimates.builder()
             .growthYears(10)
-            .growthRate(12.5d)
+            .perTarget(30d)
+            .revenueCagr(12.5)
+            .fcfCagr(12.5)
             .build();
 
     private static final Business BUSINESS = Business.builder()
