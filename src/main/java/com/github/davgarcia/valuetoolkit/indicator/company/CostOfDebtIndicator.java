@@ -17,7 +17,7 @@ public class CostOfDebtIndicator implements CompanyIndicator {
 
     @Override
     public double eval(final ValueToolkitConfigProperties params, final Company company) {
-        final var newestPeriod = company.getLatestPeriod(Period.Status.ACTUAL);
+        final var newestPeriod = company.getLatestPeriod();
 
         final var interestExpense = newestPeriod.getIncomeStatement().getInterestExpense();
         final var totalDebt = newestPeriod.getBalanceSheet().getTotalDebt();

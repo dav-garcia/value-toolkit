@@ -14,7 +14,6 @@ import lombok.Data;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class PeriodIndicators {
 
@@ -42,9 +41,7 @@ public class PeriodIndicators {
 
     public PeriodIndicators(final List<Period> periods) {
         period = null;
-        this.periods = periods.stream()
-                .filter(p -> p.getStatus() == Period.Status.ACTUAL)
-                .collect(Collectors.toList());
+        this.periods = periods;
         indicators = new HashMap<>();
     }
 

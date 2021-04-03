@@ -28,9 +28,9 @@ public class Company {
     CompanyProfile profile;
 
     /**
-     * Financial data periods inversely ordered by date (newest first, oldest last).
+     * Fiscal year periods inversely ordered by date (newest first, oldest last).
      */
-    List<Period> periods;
+    List<Period> yearPeriods;
 
     /**
      * Company specific estimates and other parameters used during valuation.
@@ -46,38 +46,21 @@ public class Company {
     CompanyIndicators indicators;
 
     public void addPeriod(final Period period) {
-        periods.add(0, period);
+        yearPeriods.add(0, period);
     }
 
     public Period getLatestPeriod() {
-        return periods.get(0);
-    }
-
-    public Period getLatestPeriod(final Period.Status withStatus) {
-        return periods.stream()
-                .filter(p -> p.getStatus() == withStatus)
-                .findFirst()
-                .orElse(null);
+        return yearPeriods.get(0);
     }
 
     public Period getEearliestPeriod() {
-        return periods.get(periods.size() - 1);
-    }
-
-    public Period getEearliestPeriod(final Period.Status withStatus) {
-        for (int i = periods.size() - 1; i >= 0; i--) {
-            final var period = periods.get(i);
-            if (period.getStatus() == withStatus) {
-                return period;
-            }
-        }
-        return null;
+        return yearPeriods.get(yearPeriods.size() - 1);
     }
 
     public Period getPreviousPeriod(final Period period) {
-        for (int i = 0; i < periods.size() - 1; i++) { // Stop at 1 item before end of list.
-            if (periods.get(i) == period) {
-                return periods.get(i + 1);
+        for (int i = 0; i < yearPeriods.size() - 1; i++) { // Stop at 1 item before end of list.
+            if (yearPeriods.get(i) == period) {
+                return yearPeriods.get(i + 1);
             }
         }
         return null;

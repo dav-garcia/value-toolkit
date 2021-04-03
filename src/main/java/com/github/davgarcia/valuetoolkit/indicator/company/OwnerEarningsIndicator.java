@@ -15,7 +15,7 @@ public class OwnerEarningsIndicator implements CompanyIndicator {
 
     @Override
     public double eval(final ValueToolkitConfigProperties params, final Company company) {
-        final var period = company.getLatestPeriod(Period.Status.ACTUAL);
+        final var period = company.getLatestPeriod();
 
         final var netIncome = period.getIncomeStatement().getNetIncome();
         final var depreciationAmortization = period.getIncomeStatement().getDepreciationAndAmortization();

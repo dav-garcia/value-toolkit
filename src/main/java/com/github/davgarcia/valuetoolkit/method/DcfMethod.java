@@ -14,7 +14,7 @@ public class DcfMethod implements ValuationMethod {
 
     @Override
     public double value(final ValueToolkitConfigProperties params, final Company company) {
-        final var period = company.getLatestPeriod(Period.Status.ACTUAL);
+        final var period = company.getLatestPeriod();
 
         final var growthYears = company.getEstimates().getGrowthYears(DEFAULT_GROWTH_YEARS);
         final var fcf0 = period.getCashFlowStatement().getFreeCashFlow();

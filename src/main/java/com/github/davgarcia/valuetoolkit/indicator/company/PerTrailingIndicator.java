@@ -15,7 +15,7 @@ public class PerTrailingIndicator implements CompanyIndicator {
 
     @Override
     public double eval(final ValueToolkitConfigProperties params, final Company company) {
-        final var period = company.getLatestPeriod(Period.Status.ACTUAL);
+        final var period = company.getLatestPeriod();
 
         final var marketCap = company.getProfile().getMarketCap();
         final var netIncome = period.getIncomeStatement().getNetIncome();

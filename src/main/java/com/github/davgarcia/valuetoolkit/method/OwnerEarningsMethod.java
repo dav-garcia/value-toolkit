@@ -9,7 +9,7 @@ public class OwnerEarningsMethod implements ValuationMethod {
 
     @Override
     public double value(final ValueToolkitConfigProperties params, final Company company) {
-        final var period = company.getLatestPeriod(Period.Status.ACTUAL);
+        final var period = company.getLatestPeriod();
 
         final var ownerEarnings = company.getIndicators().getOwnerEarnings();
         final var sharesOutstanding = period.getIncomeStatement().getWeightedAverageSharesOutstanding();

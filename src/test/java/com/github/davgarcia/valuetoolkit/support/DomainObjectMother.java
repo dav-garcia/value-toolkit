@@ -44,7 +44,6 @@ public class DomainObjectMother {
             .revenue(143015000000d)
             .costOfRevenue(46078000000d)
             .grossProfit(96937000000d)
-            .grossProfitRatio(0.6778100199279796)
             .researchAndDevelopmentExpenses(19269000000d)
             .generalAndAdministrativeExpenses(24709000000d)
             .sellingAndMarketingExpenses(19598000000d)
@@ -53,15 +52,11 @@ public class DomainObjectMother {
             .interestExpense(2591000000d)
             .depreciationAndAmortization(12796000000d)
             .ebitda(65715000000d)
-            .ebitdaRatio(0.45949725553263643)
             .operatingIncome(52959000000d)
-            .operatingIncomeRatio(0.3708422193476209)
             .totalOtherIncomeExpensesNet(2668000000d)
             .incomeBeforeTax(53036000000d)
-            .incomeBeforeTaxRatio(0.3708422193476209)
             .incomeTaxExpense(8755000000d)
             .netIncome(44281000000d)
-            .netIncomeRatio(0.3096248645247002)
             .eps(5.82)
             .epsDiluted(5.76)
             .weightedAverageSharesOutstanding(7610000000d)
@@ -148,7 +143,7 @@ public class DomainObjectMother {
             .locator(BUSINESS_LOCATOR)
             .profile(BUSINESS_PROFILE)
             // Beware this is using real fiscal years from 2016 to 2020!
-            .periods(new FmpAdapter(new FakeFmpFeignClient())
+            .yearPeriods(new FmpAdapter(new FakeFmpFeignClient())
                     .getFiscalYears(BUSINESS_LOCATOR, LocalDate.ofYearDay(2016, 1), LocalDate.ofYearDay(2020, 1)))
             .estimates(BUSINESS_ESTIMATES)
             .build();
@@ -188,7 +183,7 @@ public class DomainObjectMother {
     public static Company company() {
         if (COMPANY.getIndicators() == null) {
             COMPANY.setIndicators(new CompanyIndicators(PARAMS, COMPANY));
-            COMPANY.getPeriods().forEach(p -> p.setIndicators(new PeriodIndicators(p)));
+            COMPANY.getYearPeriods().forEach(p -> p.setIndicators(new PeriodIndicators(p)));
         }
         return COMPANY;
     }

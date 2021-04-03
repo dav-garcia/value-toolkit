@@ -15,7 +15,6 @@ public class IncomeStatement {
     double revenue;
     double costOfRevenue;
     double grossProfit;
-    double grossProfitRatio;
 
     double researchAndDevelopmentExpenses;
     double generalAndAdministrativeExpenses;
@@ -25,18 +24,14 @@ public class IncomeStatement {
     double interestExpense;
     double depreciationAndAmortization;
     double ebitda;
-    double ebitdaRatio;
 
     double operatingIncome;
-    double operatingIncomeRatio;
 
     double totalOtherIncomeExpensesNet;
     double incomeBeforeTax;
-    double incomeBeforeTaxRatio;
 
     double incomeTaxExpense;
     double netIncome;
-    double netIncomeRatio;
 
     double eps;
     double epsDiluted;

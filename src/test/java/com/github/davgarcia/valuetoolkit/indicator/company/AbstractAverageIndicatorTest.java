@@ -15,8 +15,8 @@ class AbstractAverageIndicatorTest {
 
     private static class TestAverageIndicator extends AbstractAverageIndicator {
 
-        protected TestAverageIndicator(final int maxPeriods, final Period.Status withStatus) {
-            super(maxPeriods, withStatus);
+        protected TestAverageIndicator(final int maxPeriods) {
+            super(maxPeriods);
         }
 
         @Override
@@ -26,35 +26,24 @@ class AbstractAverageIndicatorTest {
     }
 
     private static final Company FULL_COMPANY = Company.builder()
-            .periods(List.of(
+            .yearPeriods(List.of(
                     Period.builder()
-                            .status(Period.Status.COMPUTE)
                             .incomeStatement(IncomeStatement.builder().revenue(1d).build())
                             .build(),
                     Period.builder()
-                            .status(Period.Status.ACTUAL)
                             .incomeStatement(IncomeStatement.builder().revenue(10d).build())
                             .build(),
                     Period.builder()
-                            .status(Period.Status.ESTIMATE)
                             .incomeStatement(IncomeStatement.builder().revenue(100d).build())
-                            .build(),
-                    Period.builder()
-                            .status(Period.Status.ACTUAL)
-                            .incomeStatement(IncomeStatement.builder().revenue(1000d).build())
-                            .build(),
-                    Period.builder()
-                            .status(Period.Status.ACTUAL)
-                            .incomeStatement(IncomeStatement.builder().revenue(10000d).build())
                             .build()))
             .build();
     private static final Company EMPTY_COMPANY = Company.builder()
-            .periods(Collections.emptyList())
+            .yearPeriods(Collections.emptyList())
             .build();
 
     @Test
-    void given5PeriodsWhen0MaxThenReturn0() {
-        final var sut = new TestAverageIndicator(0, null);
+    void given3PeriodsWhen0MaxThenReturn0() {
+        final var sut = new TestAverageIndicator(0);
 
         final var result = sut.eval(null, FULL_COMPANY);
 
@@ -62,17 +51,17 @@ class AbstractAverageIndicatorTest {
     }
 
     @Test
-    void given3ActualperiodsWhen1MaxActualThenReturnIt() {
-        final var sut = new TestAverageIndicator(1, Period.Status.ACTUAL);
+    void given3PeriodsWhen1MaxThenReturnIt() {
+        final var sut = new TestAverageIndicator(1);
 
         final var result = sut.eval(null, FULL_COMPANY);
 
-        assertThat(result).isEqualTo(10d);
+        assertThat(result).isEqualTo(1d);
     }
 
     @Test
-    void given5PeriodsWhen2MaxThenReturnAverage() {
-        final var sut = new TestAverageIndicator(2, null);
+    void given3PeriodsWhen2MaxThenReturnAverage() {
+        final var sut = new TestAverageIndicator(2);
 
         final var result = sut.eval(null, FULL_COMPANY);
 
@@ -80,17 +69,8 @@ class AbstractAverageIndicatorTest {
     }
 
     @Test
-    void given3ActualPeriodsWhenMax4ActualThenReturnAverage() {
-        final var sut = new TestAverageIndicator(4, Period.Status.ACTUAL);
-
-        final var result = sut.eval(null, FULL_COMPANY);
-
-        assertThat(result).isEqualTo((10d + 1000d + 10000d) / 3d);
-    }
-
-    @Test
     void givenNoPeriodsThenReturn0() {
-        final var sut = new TestAverageIndicator(2, null);
+        final var sut = new TestAverageIndicator(2);
 
         final var result = sut.eval(null, EMPTY_COMPANY);
 

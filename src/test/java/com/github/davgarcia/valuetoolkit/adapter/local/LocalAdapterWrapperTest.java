@@ -73,7 +73,7 @@ class LocalAdapterWrapperTest {
     @Test
     void givenNoLocalPeriodsWhenGetThenSave() throws IOException {
         final var locator = DomainObjectMother.companyLocator();
-        final var periods = DomainObjectMother.company().getPeriods();
+        final var periods = DomainObjectMother.company().getYearPeriods();
         doReturn(periods).when(provider).getFiscalYears(locator, FIRST_YEAR, LAST_YEAR);
 
         final var resultObject = sut.getFiscalYears(locator, FIRST_YEAR, LAST_YEAR);
@@ -89,7 +89,7 @@ class LocalAdapterWrapperTest {
 
         final var result = sut.getFiscalYears(DomainObjectMother.companyLocator(), FIRST_YEAR, LAST_YEAR);
 
-        assertThat(result).isEqualTo(DomainObjectMother.company().getPeriods());
+        assertThat(result).isEqualTo(DomainObjectMother.company().getYearPeriods());
         verify(provider, never()).getFiscalYears(any(), any(), any());
     }
 

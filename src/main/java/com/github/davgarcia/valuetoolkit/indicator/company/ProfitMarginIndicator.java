@@ -9,7 +9,7 @@ public class ProfitMarginIndicator extends AbstractAverageIndicator {
     public static final ProfitMarginIndicator INSTANCE = new ProfitMarginIndicator();
 
     private ProfitMarginIndicator() {
-        super(4, Period.Status.ACTUAL);
+        super(4);
     }
 
     @Override

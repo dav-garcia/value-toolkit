@@ -15,7 +15,7 @@ public class PegrTrailingIndicator implements CompanyIndicator {
 
     @Override
     public double eval(final ValueToolkitConfigProperties params, final Company company) {
-        final var period = company.getLatestPeriod(Period.Status.ACTUAL);
+        final var period = company.getLatestPeriod();
         final var previousPeriod = company.getPreviousPeriod(period);
         if (previousPeriod == null) {
             return 0d;

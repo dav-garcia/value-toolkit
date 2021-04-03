@@ -15,7 +15,7 @@ public class PriceToBookValueIndicator implements CompanyIndicator {
 
     @Override
     public double eval(final ValueToolkitConfigProperties params, final Company company) {
-        final var period = company.getLatestPeriod(Period.Status.ACTUAL);
+        final var period = company.getLatestPeriod();
 
         final var marketCap = company.getProfile().getMarketCap();
         final var bookValue = period.getBalanceSheet().getTotalStockholdersEquity();

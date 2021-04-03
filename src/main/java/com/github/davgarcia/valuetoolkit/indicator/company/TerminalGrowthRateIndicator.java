@@ -1,9 +1,8 @@
 package com.github.davgarcia.valuetoolkit.indicator.company;
 
+import com.github.davgarcia.valuetoolkit.Company;
 import com.github.davgarcia.valuetoolkit.CompanyIndicator;
 import com.github.davgarcia.valuetoolkit.config.ValueToolkitConfigProperties;
-import com.github.davgarcia.valuetoolkit.Company;
-import com.github.davgarcia.valuetoolkit.Period;
 
 public class TerminalGrowthRateIndicator implements CompanyIndicator {
 
@@ -15,7 +14,7 @@ public class TerminalGrowthRateIndicator implements CompanyIndicator {
 
     @Override
     public double eval(final ValueToolkitConfigProperties params, final Company company) {
-        final var period = company.getLatestPeriod(Period.Status.ACTUAL);
+        final var period = company.getLatestPeriod();
 
         final var gdpRate = params.getEconomicFactors().getGdpGrowthRate(company);
         final var marketValue = company.getProfile().getMarketCap();

@@ -9,7 +9,7 @@ public class TaxRateIndicator extends AbstractAverageIndicator {
     public static final TaxRateIndicator INSTANCE = new TaxRateIndicator();
 
     private TaxRateIndicator() {
-        super(2, Period.Status.ACTUAL);
+        super(2);
     }
 
     @Override

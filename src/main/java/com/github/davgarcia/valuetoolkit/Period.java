@@ -22,21 +22,10 @@ public class Period {
         YEAR
     }
 
-    public enum Status {
-        ACTUAL,
-        ESTIMATE,
-        COMPUTE
-    }
-
     /**
      * Fiscal year or quarter.
      */
     Type type;
-
-    /**
-     * Whether it's actual (real), analyst estimates or computed data.
-     */
-    Status status;
 
     /**
      * Period name, like "FY-2020" or "Q1-2020".

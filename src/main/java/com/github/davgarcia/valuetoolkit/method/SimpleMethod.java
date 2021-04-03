@@ -14,10 +14,10 @@ public class SimpleMethod implements ValuationMethod {
 
     @Override
     public double value(final ValueToolkitConfigProperties params, final Company company) {
-        final var period = company.getLatestPeriod(Period.Status.ACTUAL);
+        final var period = company.getLatestPeriod();
 
         final var revenue = period.getIncomeStatement().getRevenue();
-        final var profitMargin = company.getIndicators().getProfitMargin();
+        final var profitMargin = company.getIndicators().getProfitMargin(); // TODO: Allow profit margin estimate.
         final var growthRate = company.getEstimates().getRevenueCagr(company.getIndicators().getPratGrowthRate());
         final var sharesOutstanding = period.getIncomeStatement().getWeightedAverageSharesOutstanding();
         final var targetPer = company.getEstimates().getPerTarget(); // TODO: Use industry average as default value.

@@ -14,7 +14,6 @@ public class IncomeStatementDto {
     double revenue;
     double costOfRevenue;
     double grossProfit;
-    double grossProfitRatio;
 
     double researchAndDevelopmentExpenses;
     double generalAndAdministrativeExpenses;
@@ -24,19 +23,14 @@ public class IncomeStatementDto {
     double interestExpense;
     double depreciationAndAmortization;
     double ebitda;
-    @JsonProperty("ebitdaratio")
-    double ebitdaRatio;
 
     double operatingIncome;
-    double operatingIncomeRatio;
 
     double totalOtherIncomeExpensesNet;
     double incomeBeforeTax;
-    double incomeBeforeTaxRatio;
 
     double incomeTaxExpense;
     double netIncome;
-    double netIncomeRatio;
 
     double eps;
     @JsonProperty("epsdiluted")

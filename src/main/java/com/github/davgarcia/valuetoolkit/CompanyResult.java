@@ -67,6 +67,7 @@ public class CompanyResult {
 
         double revenueCagr;
         double fcfCagr;
+        double pratCagr;
     }
 
     @Value

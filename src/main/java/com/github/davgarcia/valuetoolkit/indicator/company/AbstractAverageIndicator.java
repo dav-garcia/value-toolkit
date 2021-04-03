@@ -8,11 +8,9 @@ import com.github.davgarcia.valuetoolkit.Period;
 public abstract class AbstractAverageIndicator implements CompanyIndicator {
 
     private final int maxPeriods;
-    private final Period.Status withStatus;
 
-    protected AbstractAverageIndicator(final int maxPeriods, final Period.Status withStatus) {
+    protected AbstractAverageIndicator(final int maxPeriods) {
         this.maxPeriods = maxPeriods;
-        this.withStatus = withStatus;
     }
 
     @Override
@@ -20,14 +18,12 @@ public abstract class AbstractAverageIndicator implements CompanyIndicator {
     public double eval(final ValueToolkitConfigProperties params, final Company company) {
         double sum = 0d;
         int num = 0;
-        for (final var period : company.getPeriods()) {
+        for (final var period : company.getYearPeriods()) {
             if (num >= maxPeriods) {
                 break;
             }
-            if (period.getStatus() == withStatus || withStatus == null) {
-                sum += eval(params, company, period);
-                num++;
-            }
+            sum += eval(params, company, period);
+            num++;
         }
         return num > 1 ? sum / num : sum;
     }

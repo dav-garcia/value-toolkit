@@ -48,7 +48,6 @@ public class FmpAdapter implements CompanyDataProvider {
         final var periodBuilders = IntStream.rangeClosed(first.getYear(), last.getYear())
                 .mapToObj(y -> Pair.of(y, Period.builder()
                         .type(Period.Type.YEAR)
-                        .status(Period.Status.ACTUAL)
                         .name("FY-" + y)
                         .date(LocalDate.ofYearDay(y, 1))))
                 .collect(Collectors.toMap(Pair::getLeft, Pair::getRight));

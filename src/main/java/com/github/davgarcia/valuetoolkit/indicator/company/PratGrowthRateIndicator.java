@@ -9,7 +9,7 @@ public class PratGrowthRateIndicator extends AbstractAverageIndicator {
     public static final PratGrowthRateIndicator INSTANCE = new PratGrowthRateIndicator();
 
     private PratGrowthRateIndicator() {
-        super(4, Period.Status.ACTUAL);
+        super(4);
     }
 
     @Override

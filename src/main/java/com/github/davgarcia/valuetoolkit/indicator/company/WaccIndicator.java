@@ -15,7 +15,7 @@ public class WaccIndicator implements CompanyIndicator {
 
     @Override
     public double eval(final ValueToolkitConfigProperties params, final Company company) {
-        final var period = company.getLatestPeriod(Period.Status.ACTUAL);
+        final var period = company.getLatestPeriod();
 
         final var e = company.getProfile().getMarketCap();
         final var d = period.getBalanceSheet().getTotalDebt();
