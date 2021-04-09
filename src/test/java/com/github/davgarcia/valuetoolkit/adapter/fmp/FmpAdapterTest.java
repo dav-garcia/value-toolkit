@@ -3,6 +3,7 @@ package com.github.davgarcia.valuetoolkit.adapter.fmp;
 import com.github.davgarcia.valuetoolkit.support.DomainObjectMother;
 import com.github.davgarcia.valuetoolkit.support.TimeMachine;
 import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockserver.client.MockServerClient;
 import org.mockserver.model.MediaType;
@@ -71,6 +72,7 @@ class FmpAdapterTest {
     }
 
     @Test
+    @Disabled("FMP only returns last 5 quarters :-(")
     void givenLocatorThenDownloadFiscalQuarters() throws IOException {
         try {
             sut.setClock(TimeMachine.clockAt(LocalDate.ofYearDay(2020, 1)));
