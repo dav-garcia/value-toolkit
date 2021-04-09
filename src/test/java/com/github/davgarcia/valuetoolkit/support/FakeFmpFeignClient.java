@@ -3,7 +3,7 @@ package com.github.davgarcia.valuetoolkit.support;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.github.davgarcia.valuetoolkit.CompanyProfile;
+import com.github.davgarcia.valuetoolkit.BusinessProfile;
 import com.github.davgarcia.valuetoolkit.adapter.fmp.FmpFeignClient;
 import com.github.davgarcia.valuetoolkit.adapter.fmp.dto.BalanceSheetDto;
 import com.github.davgarcia.valuetoolkit.adapter.fmp.dto.CashFlowStatementDto;
@@ -14,9 +14,9 @@ import java.io.IOException;
 
 public class FakeFmpFeignClient implements FmpFeignClient {
 
-    private static final String INCOME_FILENAME = "/fmp/MSFT-income.json";
-    private static final String BALANCE_FILENAME = "/fmp/MSFT-balance.json";
-    private static final String CASHFLOW_FILENAME = "/fmp/MSFT-cashflow.json";
+    private static final String INCOME_FILENAME = "/fmp/MSFT-fy-income.json";
+    private static final String BALANCE_FILENAME = "/fmp/MSFT-fy-balance.json";
+    private static final String CASHFLOW_FILENAME = "/fmp/MSFT-fy-cashflow.json";
 
     private final ObjectMapper objectMapper;
 
@@ -28,7 +28,7 @@ public class FakeFmpFeignClient implements FmpFeignClient {
     }
 
     @Override
-    public CompanyProfile[] getCompanyProfile(final String id) {
+    public BusinessProfile[] getBusinessProfile(final String id) {
         return null;
     }
 

@@ -11,7 +11,7 @@ class DaysSalesOutstandingIndicatorTest {
 
     @Test
     void givenPeriodThenComputeDaysSalesOutstanding() {
-        final var period = DomainObjectMother.company().getLatestPeriod();
+        final var period = DomainObjectMother.business().getLatestYear();
 
         final var result = sut.eval(period);
 

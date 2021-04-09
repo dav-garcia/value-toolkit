@@ -1,9 +1,9 @@
 package com.github.davgarcia.valuetoolkit.indicator.period;
 
-import com.github.davgarcia.valuetoolkit.Period;
-import com.github.davgarcia.valuetoolkit.PeriodIndicator;
+import com.github.davgarcia.valuetoolkit.FiscalPeriod;
+import com.github.davgarcia.valuetoolkit.FiscalPeriodIndicator;
 
-public class DaysSalesOutstandingIndicator implements PeriodIndicator {
+public class DaysSalesOutstandingIndicator implements FiscalPeriodIndicator {
 
     public static final DaysSalesOutstandingIndicator INSTANCE = new DaysSalesOutstandingIndicator();
 
@@ -12,10 +12,10 @@ public class DaysSalesOutstandingIndicator implements PeriodIndicator {
     }
 
     @Override
-    public double eval(final Period period) {
+    public double eval(final FiscalPeriod period) {
         final var accountReceivables = period.getBalanceSheet().getNetReceivables();
         final var revenue = period.getIncomeStatement().getRevenue();
-        final var days = period.getType() == Period.Type.YEAR ? 365d : 365d / 4d;
+        final var days = period.getType() == FiscalPeriod.Type.YEAR ? 365d : 365d / 4d;
 
         return accountReceivables / revenue * days;
     }

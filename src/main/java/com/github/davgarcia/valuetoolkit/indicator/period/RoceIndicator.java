@@ -1,9 +1,9 @@
 package com.github.davgarcia.valuetoolkit.indicator.period;
 
-import com.github.davgarcia.valuetoolkit.Period;
-import com.github.davgarcia.valuetoolkit.PeriodIndicator;
+import com.github.davgarcia.valuetoolkit.FiscalPeriod;
+import com.github.davgarcia.valuetoolkit.FiscalPeriodIndicator;
 
-public class RoceIndicator implements PeriodIndicator {
+public class RoceIndicator implements FiscalPeriodIndicator {
 
     public static final RoceIndicator INSTANCE = new RoceIndicator();
 
@@ -12,7 +12,7 @@ public class RoceIndicator implements PeriodIndicator {
     }
 
     @Override
-    public double eval(final Period period) {
+    public double eval(final FiscalPeriod period) {
         final var ebitda = period.getIncomeStatement().getEbitda();
         final var depreciationAndAmortization = period.getIncomeStatement().getDepreciationAndAmortization();
         final var assets = period.getBalanceSheet().getTotalAssets();

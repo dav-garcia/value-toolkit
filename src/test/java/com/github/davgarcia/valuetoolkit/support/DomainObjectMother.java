@@ -1,20 +1,20 @@
 package com.github.davgarcia.valuetoolkit.support;
 
 import com.github.davgarcia.valuetoolkit.BalanceSheet;
-import com.github.davgarcia.valuetoolkit.Company;
-import com.github.davgarcia.valuetoolkit.CompanyEstimates;
-import com.github.davgarcia.valuetoolkit.CompanyIndicators;
-import com.github.davgarcia.valuetoolkit.CompanyLocator;
-import com.github.davgarcia.valuetoolkit.CompanyProfile;
+import com.github.davgarcia.valuetoolkit.Business;
+import com.github.davgarcia.valuetoolkit.BusinessEstimates;
+import com.github.davgarcia.valuetoolkit.BusinessIndicators;
+import com.github.davgarcia.valuetoolkit.BusinessLocator;
+import com.github.davgarcia.valuetoolkit.BusinessProfile;
 import com.github.davgarcia.valuetoolkit.CashFlowStatement;
+import com.github.davgarcia.valuetoolkit.FiscalPeriodIndicators;
 import com.github.davgarcia.valuetoolkit.IncomeStatement;
-import com.github.davgarcia.valuetoolkit.PeriodIndicators;
 import com.github.davgarcia.valuetoolkit.adapter.fmp.FmpAdapter;
 import com.github.davgarcia.valuetoolkit.config.EconomicFactors;
 import com.github.davgarcia.valuetoolkit.config.ValuationFactors;
 import com.github.davgarcia.valuetoolkit.config.ValueToolkitConfigProperties;
 
-import java.time.LocalDate;
+import java.time.Year;
 import java.util.Map;
 
 public class DomainObjectMother {
@@ -28,8 +28,8 @@ public class DomainObjectMother {
                     .build(),
             ValuationFactors.builder()
                     .build());
-    private static final CompanyLocator BUSINESS_LOCATOR = new CompanyLocator("NASDAQ", "MSFT");
-    private static final CompanyProfile BUSINESS_PROFILE = CompanyProfile.builder()
+    private static final BusinessLocator BUSINESS_LOCATOR = new BusinessLocator("NASDAQ", "MSFT");
+    private static final BusinessProfile BUSINESS_PROFILE = BusinessProfile.builder()
             .name("Microsoft Corp")
             .description("Microsoft Corporation develops, licenses, and supports software, services, devices, and solutions worldwide...")
             .ceo("Mr. Satya Nadella")
@@ -94,7 +94,7 @@ public class DomainObjectMother {
             .commonStock(80552000000d)
             .retainedEarnings(34566000000d)
             .accumulatedOtherComprehensiveIncomeLoss(3186000000d)
-            .othertotalStockholdersEquity(0.0)
+            .otherTotalStockholdersEquity(0.0)
             .totalStockholdersEquity(118304000000d)
             .totalInvestments(0.0)
             .totalDebt(63327000000d)
@@ -132,19 +132,18 @@ public class DomainObjectMother {
             .capitalExpenditure(-15441000000d)
             .freeCashFlow(45234000000d)
             .build();
-    private static final CompanyEstimates BUSINESS_ESTIMATES = CompanyEstimates.builder()
+    private static final BusinessEstimates BUSINESS_ESTIMATES = BusinessEstimates.builder()
             .growthYears(10)
             .perTarget(30d)
             .revenueCagr(12.5)
-            .fcfCagr(12.5)
+            .cashFlowCagr(12.5)
             .build();
 
-    private static final Company COMPANY = Company.builder()
+    private static final Business BUSINESS = Business.builder()
             .locator(BUSINESS_LOCATOR)
             .profile(BUSINESS_PROFILE)
             // Beware this is using real fiscal years from 2016 to 2020!
-            .yearPeriods(new FmpAdapter(new FakeFmpFeignClient())
-                    .getFiscalYears(BUSINESS_LOCATOR, LocalDate.ofYearDay(2016, 1), LocalDate.ofYearDay(2020, 1)))
+            .years(new FmpAdapter(new FakeFmpFeignClient()).getFiscalYears(BUSINESS_LOCATOR, Year.of(2016), Year.of(2020)))
             .estimates(BUSINESS_ESTIMATES)
             .build();
 
@@ -156,11 +155,11 @@ public class DomainObjectMother {
         return PARAMS;
     }
 
-    public static CompanyLocator companyLocator() {
+    public static BusinessLocator businessLocator() {
         return BUSINESS_LOCATOR;
     }
 
-    public static CompanyProfile companyProfile() {
+    public static BusinessProfile businessProfile() {
         return BUSINESS_PROFILE;
     }
 
@@ -176,15 +175,15 @@ public class DomainObjectMother {
         return CASH_FLOW_STATEMENT_2020;
     }
 
-    public static CompanyEstimates companyEstimates() {
+    public static BusinessEstimates businessEstimates() {
         return BUSINESS_ESTIMATES;
     }
 
-    public static Company company() {
-        if (COMPANY.getIndicators() == null) {
-            COMPANY.setIndicators(new CompanyIndicators(PARAMS, COMPANY));
-            COMPANY.getYearPeriods().forEach(p -> p.setIndicators(new PeriodIndicators(p)));
+    public static Business business() {
+        if (BUSINESS.getIndicators() == null) {
+            BUSINESS.setIndicators(new BusinessIndicators(PARAMS, BUSINESS));
+            BUSINESS.getYears().forEach(p -> p.setIndicators(new FiscalPeriodIndicators(p)));
         }
-        return COMPANY;
+        return BUSINESS;
     }
 }

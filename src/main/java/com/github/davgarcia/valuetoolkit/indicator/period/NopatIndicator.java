@@ -1,9 +1,9 @@
 package com.github.davgarcia.valuetoolkit.indicator.period;
 
-import com.github.davgarcia.valuetoolkit.Period;
-import com.github.davgarcia.valuetoolkit.PeriodIndicator;
+import com.github.davgarcia.valuetoolkit.FiscalPeriod;
+import com.github.davgarcia.valuetoolkit.FiscalPeriodIndicator;
 
-public class NopatIndicator implements PeriodIndicator {
+public class NopatIndicator implements FiscalPeriodIndicator {
 
     public static final NopatIndicator INSTANCE = new NopatIndicator();
 
@@ -12,7 +12,7 @@ public class NopatIndicator implements PeriodIndicator {
     }
 
     @Override
-    public double eval(final Period period) {
+    public double eval(final FiscalPeriod period) {
         final var operatingIncome = period.getIncomeStatement().getOperatingIncome();
         final var incomeTaxExpense = period.getIncomeStatement().getIncomeTaxExpense();
         final var incomeBeforeTax = period.getIncomeStatement().getIncomeBeforeTax();

@@ -11,9 +11,11 @@ import org.mockserver.model.Parameters;
 import org.mockserver.springtest.MockServerTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.threeten.extra.YearQuarter;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.Year;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockserver.model.HttpRequest.request;
@@ -27,9 +29,12 @@ import static org.mockserver.model.Parameter.param;
 class FmpAdapterTest {
 
     private static final String PROFILE_FILENAME = "/fmp/MSFT-profile.json";
-    private static final String INCOME_FILENAME = "/fmp/MSFT-income.json";
-    private static final String BALANCE_FILENAME = "/fmp/MSFT-balance.json";
-    private static final String CASHFLOW_FILENAME = "/fmp/MSFT-cashflow.json";
+    private static final String FY_INCOME_FILENAME = "/fmp/MSFT-fy-income.json";
+    private static final String FY_BALANCE_FILENAME = "/fmp/MSFT-fy-balance.json";
+    private static final String FY_CASHFLOW_FILENAME = "/fmp/MSFT-fy-cashflow.json";
+    private static final String FQ_INCOME_FILENAME = "/fmp/MSFT-fq-income.json";
+    private static final String FQ_BALANCE_FILENAME = "/fmp/MSFT-fq-balance.json";
+    private static final String FQ_CASHFLOW_FILENAME = "/fmp/MSFT-fq-cashflow.json";
 
     private MockServerClient mockServerClient;
 
@@ -40,23 +45,42 @@ class FmpAdapterTest {
     void givenLocatorThenDownloadProfile() throws IOException {
         setupFmpMock(PROFILE_FILENAME, "/profile/MSFT");
 
-        final var result = sut.getCompanyProfile(DomainObjectMother.companyLocator());
+        final var result = sut.getBusinessProfile(DomainObjectMother.businessLocator());
 
-        assertThat(result).isEqualTo(DomainObjectMother.companyProfile());
+        assertThat(result).isEqualTo(DomainObjectMother.businessProfile());
     }
 
     @Test
     void givenLocatorThenDownloadFiscalYears() throws IOException {
         try {
             sut.setClock(TimeMachine.clockAt(LocalDate.ofYearDay(2020, 1)));
-            setupFmpMock(INCOME_FILENAME, "/income-statement/MSFT", param("limit", "5"));
-            setupFmpMock(BALANCE_FILENAME, "/balance-sheet-statement/MSFT", param("limit", "5"));
-            setupFmpMock(CASHFLOW_FILENAME, "/cash-flow-statement/MSFT", param("limit", "5"));
+            setupFmpMock(FY_INCOME_FILENAME, "/income-statement/MSFT", param("limit", "5"));
+            setupFmpMock(FY_BALANCE_FILENAME, "/balance-sheet-statement/MSFT", param("limit", "5"));
+            setupFmpMock(FY_CASHFLOW_FILENAME, "/cash-flow-statement/MSFT", param("limit", "5"));
 
-            final var result = sut.getFiscalYears(DomainObjectMother.companyLocator(),
-                    LocalDate.ofYearDay(2016, 1), LocalDate.ofYearDay(2020, 1));
+            final var result = sut.getFiscalYears(DomainObjectMother.businessLocator(), Year.of(2016), Year.of(2020));
 
             assertThat(result).hasSize(5);
+            assertThat(result).allMatch(p -> p.getIncomeStatement() != null && p.getBalanceSheet() != null && p.getCashFlowStatement() != null);
+            assertThat(result.get(0).getIncomeStatement()).isEqualTo(DomainObjectMother.incomeStatement2020());
+            assertThat(result.get(0).getBalanceSheet()).isEqualTo(DomainObjectMother.balanceSheet2020());
+            assertThat(result.get(0).getCashFlowStatement()).isEqualTo(DomainObjectMother.cashFlowStatement2020());
+        } finally {
+            sut.setClock(null);
+        }
+    }
+
+    @Test
+    void givenLocatorThenDownloadFiscalQuarters() throws IOException {
+        try {
+            sut.setClock(TimeMachine.clockAt(LocalDate.ofYearDay(2020, 1)));
+            setupFmpMock(FQ_INCOME_FILENAME, "/income-statement/MSFT", param("limit", "20"), param("period", "quarter"));
+            setupFmpMock(FQ_BALANCE_FILENAME, "/balance-sheet-statement/MSFT", param("limit", "20"), param("period", "quarter"));
+            setupFmpMock(FQ_CASHFLOW_FILENAME, "/cash-flow-statement/MSFT", param("limit", "20"), param("period", "quarter"));
+
+            final var result = sut.getQuarters(DomainObjectMother.businessLocator(), YearQuarter.of(2016, 1), YearQuarter.of(2020, 4));
+
+            assertThat(result).hasSize(20);
             assertThat(result).allMatch(p -> p.getIncomeStatement() != null && p.getBalanceSheet() != null && p.getCashFlowStatement() != null);
             assertThat(result.get(0).getIncomeStatement()).isEqualTo(DomainObjectMother.incomeStatement2020());
             assertThat(result.get(0).getBalanceSheet()).isEqualTo(DomainObjectMother.balanceSheet2020());

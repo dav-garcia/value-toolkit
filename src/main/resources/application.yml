@@ -3,6 +3,8 @@ provider:
   active: "fmp"
   local:
     dir: "local"
+  alphavantage:
+    url: "https://www.alphavantage.co"
   fmp:
     url: "https://financialmodelingprep.com"
 

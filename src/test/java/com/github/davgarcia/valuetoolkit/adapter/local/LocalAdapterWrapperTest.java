@@ -1,6 +1,6 @@
 package com.github.davgarcia.valuetoolkit.adapter.local;
 
-import com.github.davgarcia.valuetoolkit.CompanyDataProvider;
+import com.github.davgarcia.valuetoolkit.BusinessDataProvider;
 import com.github.davgarcia.valuetoolkit.support.DomainObjectMother;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
-import java.time.LocalDate;
+import java.time.Year;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -28,12 +28,12 @@ import static org.mockito.Mockito.verify;
 class LocalAdapterWrapperTest {
 
     private static final String PROFILE_NAME = "NASDAQ.MSFT-profile.json";
-    private static final String PERIODS_NAME = "NASDAQ.MSFT-periods-20160101-20200101.json";
-    private static final LocalDate FIRST_YEAR = LocalDate.ofYearDay(2016, 1);
-    private static final LocalDate LAST_YEAR = LocalDate.ofYearDay(2020, 1);
+    private static final String PERIODS_NAME = "NASDAQ.MSFT-fy-2016-2020.json";
+    private static final Year FIRST_YEAR = Year.of(2016);
+    private static final Year LAST_YEAR = Year.of(2020);
 
     @Mock
-    private CompanyDataProvider provider;
+    private BusinessDataProvider provider;
     private FileSystem fileSystem;
     private LocalAdapterWrapper sut;
 
@@ -49,11 +49,11 @@ class LocalAdapterWrapperTest {
 
     @Test
     void givenNoLocalProfileWhenGetThenSave() throws IOException {
-        final var locator = DomainObjectMother.companyLocator();
-        final var profile = DomainObjectMother.companyProfile();
-        doReturn(profile).when(provider).getCompanyProfile(locator);
+        final var locator = DomainObjectMother.businessLocator();
+        final var profile = DomainObjectMother.businessProfile();
+        doReturn(profile).when(provider).getBusinessProfile(locator);
 
-        final var resultObject = sut.getCompanyProfile(locator);
+        final var resultObject = sut.getBusinessProfile(locator);
         final var resultJson = Files.readString(fileSystem.getPath(PROFILE_NAME));
 
         assertThat(resultObject).isEqualTo(profile);
@@ -64,16 +64,16 @@ class LocalAdapterWrapperTest {
     void givenLocalProfileWhenGetThenReturnIt() throws IOException {
         Files.writeString(fileSystem.getPath(PROFILE_NAME), loadResource("local", PROFILE_NAME));
 
-        final var result = sut.getCompanyProfile(DomainObjectMother.companyLocator());
+        final var result = sut.getBusinessProfile(DomainObjectMother.businessLocator());
 
-        assertThat(result).isEqualTo(DomainObjectMother.companyProfile());
-        verify(provider, never()).getCompanyProfile(any());
+        assertThat(result).isEqualTo(DomainObjectMother.businessProfile());
+        verify(provider, never()).getBusinessProfile(any());
     }
 
     @Test
     void givenNoLocalPeriodsWhenGetThenSave() throws IOException {
-        final var locator = DomainObjectMother.companyLocator();
-        final var periods = DomainObjectMother.company().getYearPeriods();
+        final var locator = DomainObjectMother.businessLocator();
+        final var periods = DomainObjectMother.business().getYears();
         doReturn(periods).when(provider).getFiscalYears(locator, FIRST_YEAR, LAST_YEAR);
 
         final var resultObject = sut.getFiscalYears(locator, FIRST_YEAR, LAST_YEAR);
@@ -87,9 +87,9 @@ class LocalAdapterWrapperTest {
     void givenLocalPeriodsWhenGetThenReturnThem() throws IOException {
         Files.writeString(fileSystem.getPath(PERIODS_NAME), loadResource("local", PERIODS_NAME));
 
-        final var result = sut.getFiscalYears(DomainObjectMother.companyLocator(), FIRST_YEAR, LAST_YEAR);
+        final var result = sut.getFiscalYears(DomainObjectMother.businessLocator(), FIRST_YEAR, LAST_YEAR);
 
-        assertThat(result).isEqualTo(DomainObjectMother.company().getYearPeriods());
+        assertThat(result).isEqualTo(DomainObjectMother.business().getYears());
         verify(provider, never()).getFiscalYears(any(), any(), any());
     }
 

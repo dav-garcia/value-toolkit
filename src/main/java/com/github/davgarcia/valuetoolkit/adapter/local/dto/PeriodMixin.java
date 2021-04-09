@@ -1,10 +1,10 @@
 package com.github.davgarcia.valuetoolkit.adapter.local.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.github.davgarcia.valuetoolkit.PeriodIndicators;
+import com.github.davgarcia.valuetoolkit.FiscalPeriodIndicators;
 
 public interface PeriodMixin {
 
     @JsonIgnore
-    PeriodIndicators getIndicators();
+    FiscalPeriodIndicators getIndicators();
 }

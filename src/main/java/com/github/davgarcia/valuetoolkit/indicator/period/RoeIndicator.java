@@ -1,9 +1,9 @@
 package com.github.davgarcia.valuetoolkit.indicator.period;
 
-import com.github.davgarcia.valuetoolkit.Period;
-import com.github.davgarcia.valuetoolkit.PeriodIndicator;
+import com.github.davgarcia.valuetoolkit.FiscalPeriod;
+import com.github.davgarcia.valuetoolkit.FiscalPeriodIndicator;
 
-public class RoeIndicator implements PeriodIndicator {
+public class RoeIndicator implements FiscalPeriodIndicator {
 
     public static final RoeIndicator INSTANCE = new RoeIndicator();
 
@@ -12,7 +12,7 @@ public class RoeIndicator implements PeriodIndicator {
     }
 
     @Override
-    public double eval(final Period period) {
+    public double eval(final FiscalPeriod period) {
         final var netIncome = period.getIncomeStatement().getNetIncome();
         final var equity = period.getBalanceSheet().getTotalStockholdersEquity();
 

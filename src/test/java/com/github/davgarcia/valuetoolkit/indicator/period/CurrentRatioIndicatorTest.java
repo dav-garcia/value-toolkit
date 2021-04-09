@@ -4,7 +4,6 @@ import com.github.davgarcia.valuetoolkit.support.DomainObjectMother;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class CurrentRatioIndicatorTest {
 
@@ -12,7 +11,7 @@ class CurrentRatioIndicatorTest {
 
     @Test
     void givenPeriodThenComputeCurrentRatio() {
-        final var period = DomainObjectMother.company().getLatestPeriod();
+        final var period = DomainObjectMother.business().getLatestYear();
 
         final var result = sut.eval(period);
 

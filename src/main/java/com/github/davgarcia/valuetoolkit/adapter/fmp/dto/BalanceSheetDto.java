@@ -45,7 +45,8 @@ public class BalanceSheetDto {
     double commonStock;
     double retainedEarnings;
     double accumulatedOtherComprehensiveIncomeLoss;
-    double othertotalStockholdersEquity;
+    @JsonProperty("othertotalStockholdersEquity")
+    double otherTotalStockholdersEquity;
     double totalStockholdersEquity;
     double totalInvestments;
     double totalDebt;

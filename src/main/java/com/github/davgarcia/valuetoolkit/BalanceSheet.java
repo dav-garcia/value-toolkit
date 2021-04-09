@@ -45,7 +45,7 @@ public class BalanceSheet {
     double commonStock;
     double retainedEarnings;
     double accumulatedOtherComprehensiveIncomeLoss;
-    double othertotalStockholdersEquity;
+    double otherTotalStockholdersEquity;
     double totalStockholdersEquity;
     double totalInvestments;
     double totalDebt;

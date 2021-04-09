@@ -1,9 +1,9 @@
 package com.github.davgarcia.valuetoolkit.indicator.period;
 
-import com.github.davgarcia.valuetoolkit.Period;
-import com.github.davgarcia.valuetoolkit.PeriodIndicator;
+import com.github.davgarcia.valuetoolkit.FiscalPeriod;
+import com.github.davgarcia.valuetoolkit.FiscalPeriodIndicator;
 
-public class CurrentRatioIndicator implements PeriodIndicator {
+public class CurrentRatioIndicator implements FiscalPeriodIndicator {
 
     public static final CurrentRatioIndicator INSTANCE = new CurrentRatioIndicator();
 
@@ -12,7 +12,7 @@ public class CurrentRatioIndicator implements PeriodIndicator {
     }
 
     @Override
-    public double eval(final Period period) {
+    public double eval(final FiscalPeriod period) {
         final var currentAssets = period.getBalanceSheet().getTotalCurrentAssets();
         final var currentLiabilities = period.getBalanceSheet().getTotalCurrentLiabilities();
 

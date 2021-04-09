@@ -1,20 +1,22 @@
 package com.github.davgarcia.valuetoolkit.method;
 
-import com.github.davgarcia.valuetoolkit.ValuationMethod;
-import com.github.davgarcia.valuetoolkit.config.ValueToolkitConfigProperties;
-import com.github.davgarcia.valuetoolkit.Company;
-import com.github.davgarcia.valuetoolkit.Period;
+import com.github.davgarcia.valuetoolkit.Business;
+import com.github.davgarcia.valuetoolkit.FiscalPeriod;
 
-public class OwnerEarningsMethod implements ValuationMethod {
+public class OwnerEarningsMethod extends Abstract2StageMethod {
 
     @Override
-    public double value(final ValueToolkitConfigProperties params, final Company company) {
-        final var period = company.getLatestPeriod();
+    protected String getLabel() {
+        return "ownerearnings";
+    }
 
-        final var ownerEarnings = company.getIndicators().getOwnerEarnings();
-        final var sharesOutstanding = period.getIncomeStatement().getWeightedAverageSharesOutstanding();
-        final var earningsMultiple = params.getValuationFactors().getEarningsMultiple();
+    @Override
+    protected double getValue0(final Business business, final FiscalPeriod period) {
+        return period.getIndicators().getOwnerEarnings();
+    }
 
-        return ownerEarnings / sharesOutstanding * earningsMultiple;
+    @Override
+    protected double getGrowthRate0(final Business business, final FiscalPeriod period) {
+        return business.getEstimates().getCashFlowCagr(business.getIndicators().getPratGrowthRate()) / 100d;
     }
 }

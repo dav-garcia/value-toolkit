@@ -1,6 +1,6 @@
 package com.github.davgarcia.valuetoolkit.config;
 
-import com.github.davgarcia.valuetoolkit.CompanyDataProvider;
+import com.github.davgarcia.valuetoolkit.BusinessDataProvider;
 import com.github.davgarcia.valuetoolkit.ValueToolkitService;
 import com.github.davgarcia.valuetoolkit.adapter.fmp.FmpAdapter;
 import com.github.davgarcia.valuetoolkit.adapter.fmp.FmpFeignClient;
@@ -22,14 +22,14 @@ public class ValueToolkitConfig {
 
     @Bean
     @ConditionalOnProperty(value = "provider.active", havingValue = "fmp")
-    public CompanyDataProvider fmpAdapter(final FmpFeignClient feignClient) {
+    public BusinessDataProvider fmpAdapter(final FmpFeignClient feignClient) {
         return new FmpAdapter(feignClient);
     }
 
     @Bean
     @Primary
-    public CompanyDataProvider localAdapterWrapper(final CompanyDataProvider provider,
-                                                   @Value("${provider.local.dir}") final String localDir) {
+    public BusinessDataProvider localAdapterWrapper(final BusinessDataProvider provider,
+                                                    @Value("${provider.local.dir}") final String localDir) {
         LOG.info("Active data provider: {}", provider.getClass().getSimpleName());
         LOG.info("Local directory: {}", localDir);
         return new LocalAdapterWrapper(provider, Path.of(localDir));
@@ -37,7 +37,7 @@ public class ValueToolkitConfig {
 
     @Bean
     public ValueToolkitService valueToolkitService(final ValueToolkitConfigProperties params,
-                                                   final CompanyDataProvider provider) {
+                                                   final BusinessDataProvider provider) {
         return new ValueToolkitService(params, provider);
     }
 }
